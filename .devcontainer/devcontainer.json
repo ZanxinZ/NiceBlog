@@ -1,7 +1,8 @@
 {
   "name": "NiceBlog",
   "image": "mcr.microsoft.com/devcontainers/javascript-node:22",
-  "postCreateCommand": "corepack enable && pnpm install",
+  "containerEnv": { "COREPACK_ENABLE_DOWNLOAD_PROMPT": "0" },
+  "postCreateCommand": "sudo corepack enable && pnpm install",
   "forwardPorts": [3000],
   "portsAttributes": {
     "3000": { "label": "Preview", "onAutoForward": "openPreview" }
