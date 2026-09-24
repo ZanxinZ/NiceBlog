@@ -5,3 +5,6 @@ next-env.d.ts
 *.tsbuildinfo
 .DS_Store
 .env*.local
+
+# 开发模式的搜索索引，由 scripts/dev-search-index.mjs 生成
+public/pagefind/

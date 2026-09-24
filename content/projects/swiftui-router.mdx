@@ -1,0 +1,32 @@
+---
+title: SwiftUI 路由层
+summary: 基于 NavigationStack 的数据驱动路由。路由集中定义，路径即状态，支持深链接和状态恢复。
+year: "2025"
+role: 架构设计
+status: 内部项目
+tone: blue
+stack:
+  - Swift
+  - SwiftUI
+featured: true
+cover: /images/projects/swiftui-router.svg
+previewTitle: swiftui-router
+order: 2
+---
+
+<Callout type="tip">
+  这是示例项目，替换成你自己的项目内容即可。文件位置：`content/projects/swiftui-router.mdx`。
+</Callout>
+
+## 背景
+
+老项目的页面跳转散落在各个 View 里，深链接和状态恢复都很难做。
+
+## 方案
+
+把所有页面定义为一个 `Route` 枚举，导航状态就是一个 `[Route]` 数组。详细记录见[这篇文章](/blog/tech/swiftui-navigation/)。
+
+## 结果
+
+- 新增页面只需要加一个 case
+- 深链接解析成 `[Route]` 后直接赋值

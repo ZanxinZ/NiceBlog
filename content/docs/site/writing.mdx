@@ -1,0 +1,61 @@
+---
+title: 新增内容
+description: 项目、文档和文章的 frontmatter 字段说明。
+order: 1
+---
+
+## 新增文档
+
+在 `content/docs/` 下新建 `.mdx` 文件即可，侧栏会自动出现。
+
+```md
+---
+title: 标题
+description: 一句话说明这篇文档解决什么问题
+order: 1        # 可选，同组内越小越靠前
+---
+```
+
+### 新增分组
+
+新建一个目录，并在里面放一个 `index.mdx`。它的 `title` 就是侧栏里的分组名，`order` 决定分组顺序，正文是分组的概述页。
+
+## 新增项目
+
+```md
+---
+title: 项目名
+summary: 一两句话介绍
+year: "2026"
+role: 你的角色
+status: 已上线          # 显示为标签
+tone: green             # 标签颜色：neutral / red / blue / green / yellow
+stack: [Swift, SwiftUI]
+links:
+  - label: App Store
+    href: https://...
+featured: true          # 是否出现在首页
+order: 1                # 越小越靠前，第一个项目在网格中占大格
+cover: /images/xxx.png  # 可选，项目图片；建议 16:10，没有时显示占位
+preview: |              # 可选，详情页没有封面时显示在窗口框里的文本
+  ...
+draft: false
+---
+```
+
+## 新增文章
+
+```md
+---
+title: 标题
+description: 摘要
+date: 2026-09-23
+tags: [SwiftUI]
+cover: /images/blog/xxx.png   # 可选，首页头条和列表缩略图会显示它
+draft: false
+---
+```
+
+## 图片
+
+放在 `public/images/`，在正文中写 `/images/xxx.png`。部署到子路径时会自动补全前缀。

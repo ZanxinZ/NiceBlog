@@ -4,16 +4,22 @@
   "private": true,
   "packageManager": "pnpm@10.34.5",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "pnpm search:dev && next dev",
+    "search:dev": "node scripts/dev-search-index.mjs",
+    "build": "node -e \"require('fs').rmSync('public/pagefind',{recursive:true,force:true})\" && next build && pagefind --site out",
     "start": "npx serve out"
   },
   "dependencies": {
     "@mdx-js/mdx": "^3.1.1",
+    "@phosphor-icons/react": "^2.1.10",
     "gray-matter": "^4.0.3",
+    "mermaid": "^12.0.0",
     "next": "^16.3.6",
     "react": "^19.3.0",
-    "react-dom": "^19.3.0"
+    "react-dom": "^19.3.0",
+    "rehype-pretty-code": "^0.14.5",
+    "remark-gfm": "^4.0.1",
+    "shiki": "^4.4.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.3",
@@ -21,6 +27,7 @@
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "pagefind": "^1.5.2",
     "tailwindcss": "^4.3.3",
     "typescript": "^5"
   }

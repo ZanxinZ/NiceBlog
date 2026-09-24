@@ -1,0 +1,29 @@
+---
+title: WKWebView 混合容器
+summary: 统一 Native 与 Web 的通信协议，让业务页面可以在两端之间平滑迁移。
+year: "2024"
+role: 负责人
+status: 已上线
+tone: yellow
+stack:
+  - Swift
+  - WKWebView
+  - TypeScript
+featured: true
+cover: /images/projects/hybrid-container.svg
+previewTitle: hybrid-container
+order: 3
+---
+
+<Callout type="tip">
+  这是示例项目，替换成你自己的项目内容即可。文件位置：`content/projects/hybrid-container.mdx`。
+</Callout>
+
+## 背景
+
+多个业务线各自封装了 WebView，通信方式不统一，问题难以排查。
+
+## 方案
+
+- 定义一套带版本号的消息协议
+- Native 侧用注册表管理能力，Web 侧提供类型完整的 SDK

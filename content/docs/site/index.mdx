@@ -1,0 +1,21 @@
+---
+title: 本站指南
+description: 网站的目录结构、内容类型和发布流程。
+order: 1
+---
+
+网站有三种内容，都放在 `content/` 下，用 MDX 编写。
+
+| 类型 | 目录 | 地址 |
+| --- | --- | --- |
+| 项目 | `content/projects/*.mdx` | `/projects/<文件名>/` |
+| 文档 | `content/docs/**` | `/docs/<目录>/<文件名>/` |
+| 文档 | `content/blog/{tech,life}/*.mdx` | `/blog/<分类>/<文件名>/` |
+
+名字、头像、简介，以及关于页的「经历」「能力」「技术栈」「最近在做」都在 `lib/site.ts` 里修改。
+
+首页分为上下两页：上面是文档（`content/blog/`，最新一篇作为头条），下面是 `featured: true` 的项目。文档入口在关于页底部。
+
+## 发布
+
+提交到 `main` 分支后，GitHub Actions 会构建、生成搜索索引并发布，几分钟后上线。

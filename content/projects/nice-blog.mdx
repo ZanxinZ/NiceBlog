@@ -1,0 +1,46 @@
+---
+title: NiceBlog
+summary: 这个网站本身。Next.js 静态导出，用 MDX 管理项目、文档和文章，推送到 main 后自动发布到 GitHub Pages。
+year: "2026"
+role: 设计与开发
+status: 持续更新
+tone: green
+stack:
+  - Next.js
+  - MDX
+  - Tailwind CSS
+  - Pagefind
+links:
+  - label: 源码
+    href: https://github.com/zanxinz/NiceBlog
+featured: true
+cover: /images/projects/nice-blog.svg
+order: 1
+previewTitle: content/
+preview: |
+  content/
+  ├── projects/        项目页，一个 .mdx 一个项目
+  │   └── nice-blog.mdx
+  ├── docs/            文档，按目录分组
+  │   ├── index.mdx
+  │   ├── site/
+  │   └── ios/
+  └── blog/            文档
+      ├── tech/
+      └── life/
+---
+
+## 背景
+
+想要一个长期维护的个人站点：既能像产品页一样介绍自己和项目，也能承载持续更新的技术文档，还要写得下日常随笔。
+
+## 做法
+
+- 所有内容都是 `content/` 下的 MDX 文件，新增内容不需要改代码。
+- 文档按目录自动生成侧栏、本页目录和上一篇 / 下一篇。
+- 全站搜索由 Pagefind 在构建时生成索引，不需要后端服务。
+- 首页是门户式的上下两页：文档和项目，封面位置都是可替换的图片容器。
+
+## 设计
+
+参考 Apple HIG：系统字体、大标题层级、分组列表和 44pt 点击区域。最外层卡片用新拟物表现层级，卡片内部保持扁平，只用一个强调色。

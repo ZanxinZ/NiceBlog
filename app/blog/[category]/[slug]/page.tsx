@@ -1,7 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import Markdown from "@/components/Markdown";
+import { CaretLeft } from "@phosphor-icons/react/dist/ssr";
+import PostToc from "@/components/blog/PostToc";
+import Markdown from "@/components/mdx/Markdown";
+import Container from "@/components/ui/Container";
+import ImageFrame from "@/components/ui/ImageFrame";
+import Tag from "@/components/ui/Tag";
+import { extractHeadings } from "@/lib/content";
 import { categories, getPost, getPosts, isCategory } from "@/lib/posts";
 
 type Props = { params: Promise<{ category: string; slug: string }> };
@@ -22,23 +28,43 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return post ? { title: post.title, description: post.description } : {};
 }
 
+// 文章页：扁平布局。目录栏悬浮贴在视口左侧，不占正文布局。
 export default async function PostPage({ params }: Props) {
   const post = await load(params);
   if (!post || post.draft) notFound();
 
+  const headings = extractHeadings(post.content);
+
   return (
-    <article className="py-12">
-      <Link href={`/blog/${post.category}/`} className="text-sm text-neutral-500 hover:text-neutral-900 dark:hover:text-white">
-        ← {categories[post.category]}
-      </Link>
-      <header className="mb-10 mt-6">
-        <h1 className="text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">{post.title}</h1>
-        <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-neutral-500">
-          <time dateTime={post.date}>{post.date}</time>
-          {post.tags.map((tag) => <span key={tag}>#{tag}</span>)}
-        </div>
-      </header>
-      <Markdown source={post.content} />
-    </article>
+    <Container className="pb-8 pt-6 sm:pt-8">
+      <div>
+        {headings.length > 0 && <PostToc headings={headings} />}
+
+        <article data-pagefind-body className="flat-panel min-w-0 rounded-[28px] px-5 py-8 sm:px-10 sm:py-12">
+          <div className="mx-auto max-w-3xl">
+            <header className="border-b border-edge pb-8">
+              <Link href={`/blog/${post.category}/`} className="-ml-1 mb-3 inline-flex min-h-11 items-center gap-1 text-[15px] font-medium text-accent">
+                <CaretLeft size={16} weight="bold" />
+                {categories[post.category]}
+              </Link>
+              <div className="flex flex-wrap items-center gap-2">
+                <time dateTime={post.date} className="font-mono text-xs text-muted">
+                  {post.date}
+                </time>
+                {post.tags.map((tag) => (
+                  <Tag key={tag}>{tag}</Tag>
+                ))}
+              </div>
+              <h1 className="mt-3 text-[32px] font-bold leading-[1.2] tracking-[-0.02em] text-ink-strong sm:text-[40px]">{post.title}</h1>
+              {post.description && <p className="mt-3 text-[17px] text-muted">{post.description}</p>}
+              {post.cover && <ImageFrame src={post.cover} alt={post.title} className="mt-6" />}
+            </header>
+            <div className="pt-8">
+              <Markdown source={post.content} />
+            </div>
+          </div>
+        </article>
+      </div>
+    </Container>
   );
 }

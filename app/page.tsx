@@ -1,69 +1,74 @@
 import Link from "next/link";
+import { CaretRight } from "@phosphor-icons/react/dist/ssr";
+import FeaturedPost from "@/components/home/FeaturedPost";
+import PageDots from "@/components/home/PageDots";
+import PortalPage from "@/components/home/PortalPage";
 import PostList from "@/components/PostList";
-import { getPosts } from "@/lib/posts";
-import { site } from "@/lib/site";
+import ProjectGrid from "@/components/ProjectGrid";
+import Card, { CardTitle } from "@/components/ui/Card";
+import Reveal from "@/components/ui/Reveal";
+import { categories, getPosts, type Category } from "@/lib/posts";
+import { getProjects } from "@/lib/projects";
 
-const now = ["用 SwiftUI 重写一个老项目", "整理 iOS 架构笔记", "每周三次力量训练"];
-
-const experience = [
-  { period: "2023 — 至今", role: "Senior iOS Engineer", org: "Company A" },
-  { period: "2020 — 2023", role: "iOS Engineer", org: "Company B" },
-];
-
-const stack = ["Swift", "SwiftUI", "UIKit", "TypeScript", "React", "Next.js"];
-
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <section className="py-10">
-      <h2 className="mb-4 text-sm font-medium uppercase tracking-widest text-neutral-500">{title}</h2>
-      {children}
-    </section>
-  );
-}
-
+// 门户式首页：上一页是文档（/blog），下一页是项目。
 export default function Home() {
-  const posts = getPosts().slice(0, 5);
+  const posts = getPosts();
+  const [featured, ...recent] = posts;
+  const projects = getProjects().filter((p) => p.featured);
 
   return (
     <>
-      <section className="pb-6 pt-12">
-        <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">{site.name}</h1>
-        <p className="mt-4 text-lg text-neutral-600 dark:text-neutral-400">{site.tagline}</p>
-        <p className="mt-6 max-w-2xl leading-relaxed">
-          我是一名软件工程师，主要做 iOS 和 Web。这里记录我的工作经历、技术思考和日常生活。
-          <Link href="/about/" className="ml-1 underline underline-offset-4">了解更多 →</Link>
-        </p>
-      </section>
+      <PageDots
+        pages={[
+          { id: "writing", label: "文档" },
+          { id: "projects", label: "项目" },
+        ]}
+      />
 
-      <Section title="Now">
-        <ul className="list-inside list-disc space-y-1.5 leading-relaxed marker:text-neutral-400">
-          {now.map((item) => <li key={item}>{item}</li>)}
-        </ul>
-      </Section>
-
-      <Section title="Experience">
-        <ul className="space-y-3">
-          {experience.map((e) => (
-            <li key={e.period} className="flex flex-col gap-0.5 sm:flex-row sm:gap-6">
-              <span className="w-32 shrink-0 text-sm tabular-nums text-neutral-500">{e.period}</span>
-              <span>{e.role} · <span className="text-neutral-600 dark:text-neutral-400">{e.org}</span></span>
-            </li>
-          ))}
-        </ul>
-      </Section>
-
-      <Section title="Stack">
-        <div className="flex flex-wrap gap-2">
-          {stack.map((s) => (
-            <span key={s} className="rounded-full border border-neutral-200 px-3 py-1 text-sm dark:border-neutral-800">{s}</span>
-          ))}
+      <PortalPage id="writing" index={1} total={2} title="博客" description="技术实践 & 生活随笔" action={{ href: "/blog/", label: "更多" }}>
+        <div className="grid gap-6 lg:grid-cols-[1.45fr_1fr]">
+          <Reveal className="min-w-0">
+            {featured ? (
+              <FeaturedPost post={featured} />
+            ) : (
+              <PostList posts={[]} />
+            )}
+          </Reveal>
+          <div className="grid min-w-0 content-start gap-6">
+            {recent.length > 0 && (
+              <Reveal index={1}>
+                <Card>
+                  <CardTitle>近期文章</CardTitle>
+                  <PostList posts={recent.slice(0, 4)} inset />
+                </Card>
+              </Reveal>
+            )}
+            <Reveal index={2}>
+              <Card>
+                <CardTitle>分类</CardTitle>
+                <ul className="flat divide-y divide-edge overflow-hidden rounded-[18px] px-2">
+                  {(Object.keys(categories) as Category[]).map((key) => (
+                    <li key={key}>
+                      <Link
+                        href={`/blog/${key}/`}
+                        className="group flex min-h-11 items-center gap-3 px-3 py-3"
+                      >
+                        <span className="flex-1 text-[16px] font-medium text-ink-strong">{categories[key]}</span>
+                        <span className="font-mono text-xs text-muted">{posts.filter((p) => p.category === key).length} 篇</span>
+                        <CaretRight size={16} weight="bold" className="text-muted transition-transform group-hover:translate-x-0.5 group-hover:text-accent" />
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </Card>
+            </Reveal>
+          </div>
         </div>
-      </Section>
+      </PortalPage>
 
-      <Section title="Recent Posts">
-        <PostList posts={posts} />
-        <Link href="/blog/" className="mt-4 inline-block text-sm underline underline-offset-4">全部文章 →</Link>
-      </Section>
+      <PortalPage id="projects" index={2} total={2} title="项目" description="参与过的产品" action={{ href: "/projects/", label: "更多" }}>
+        <ProjectGrid projects={projects} />
+      </PortalPage>
     </>
   );
 }

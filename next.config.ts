@@ -11,6 +11,9 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
+  // 允许用局域网地址访问开发服务器（例如手机或其他电脑预览）。
+  // 不加的话 Next.js 会拦截开发用的 JS，页面能显示但所有交互都不生效。只影响 pnpm dev。
+  allowedDevOrigins: ["192.168.1.143"],
 };
 
 export default nextConfig;

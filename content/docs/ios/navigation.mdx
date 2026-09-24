@@ -1,0 +1,27 @@
+---
+title: 导航
+description: 用 NavigationStack 做数据驱动的路由。
+order: 1
+---
+
+## 原则
+
+- 路由集中定义在一个 `Route` 枚举里
+- 导航状态就是 `[Route]`，可以序列化、恢复和测试
+
+## 定义路由
+
+```swift
+enum Route: Hashable {
+    case detail(id: String)
+    case settings
+}
+```
+
+## 深链接
+
+把 URL 解析成 `[Route]`，直接赋值给导航路径。
+
+## 延伸阅读
+
+- [SwiftUI Navigation 的一些实践](/blog/tech/swiftui-navigation/)
