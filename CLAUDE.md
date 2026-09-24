@@ -1,3 +1,7 @@
+文章来源：
+- 如果我提供外部链接，例如notion链接，则读取之后作为信息源来对当前网站增删改查。
+- 如果给的是纯文本，则以纯文本为信息源来做增删改查。
+
 # NiceBlog 内容规范
 
 内容都放在 `content/` 下，用 MDX 写，文件开头是 frontmatter。字段的读取逻辑在 `lib/posts.ts`、`lib/docs.ts`、`lib/projects.ts`，站内说明见 `content/docs/site/writing.mdx`。
