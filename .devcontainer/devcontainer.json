@@ -1,0 +1,14 @@
+{
+  "name": "NiceBlog",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:22",
+  "postCreateCommand": "corepack enable && pnpm install",
+  "forwardPorts": [3000],
+  "portsAttributes": {
+    "3000": { "label": "Preview", "onAutoForward": "openPreview" }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": ["unifiedjs.vscode-mdx", "bradlc.vscode-tailwindcss"]
+    }
+  }
+}
