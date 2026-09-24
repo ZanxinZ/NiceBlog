@@ -72,3 +72,7 @@ draft: false
 ## 4. 不在 `content/` 里的内容
 
 名字、头像、简介、关于页的各个区块、联系方式都在 `lib/site.ts` 里改。颜色和字体在 `app/globals.css` 里改。
+
+
+# Git 操作相关
+git 操作之前，必须经过我授权的同意
