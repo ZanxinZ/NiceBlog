@@ -6,56 +6,68 @@
   <rect width="1200" height="750" fill="#F7F6F3"/>
   <rect width="1200" height="750" fill="url(#dots)"/>
 
-  <!-- 手机：Native 外壳 + WebView -->
-  <g transform="translate(150 95)">
-    <rect width="280" height="560" rx="38" fill="#FFFFFF" stroke="#D9D8D5" stroke-width="1.5"/>
-    <rect x="110" y="14" width="60" height="8" rx="4" fill="#EAEAEA"/>
-    <rect x="16" y="40" width="248" height="56" rx="10" fill="#111111"/>
-    <text x="36" y="75" font-size="16" fill="#FFFFFF">Native 导航栏</text>
-    <rect x="16" y="108" width="248" height="370" rx="10" fill="#E1F3FE" stroke="#1F6C9F" stroke-dasharray="5 5" stroke-opacity="0.5"/>
-    <text x="32" y="136" font-family="Menlo, monospace" font-size="12" fill="#1F6C9F">WKWebView</text>
-    <rect x="32" y="152" width="216" height="110" rx="8" fill="#FFFFFF"/>
-    <g fill="#BFDDF2"><rect x="32" y="280" width="180" height="10" rx="5"/><rect x="32" y="300" width="200" height="10" rx="5"/><rect x="32" y="320" width="140" height="10" rx="5"/></g>
-    <rect x="32" y="410" width="216" height="46" rx="8" fill="#1F6C9F"/>
-    <text x="140" y="439" text-anchor="middle" font-size="15" fill="#FFFFFF">分享</text>
-    <rect x="16" y="490" width="248" height="50" rx="10" fill="#F7F6F3" stroke="#EAEAEA"/>
-    <g fill="#D9D8D5"><circle cx="66" cy="515" r="9"/><circle cx="140" cy="515" r="9"/><circle cx="214" cy="515" r="9"/></g>
-  </g>
-
-  <!-- Bridge -->
-  <g transform="translate(468 300)">
-    <rect width="150" height="150" rx="12" fill="#FFFFFF" stroke="#EAEAEA"/>
-    <text x="75" y="64" text-anchor="middle" font-size="18" font-weight="600" fill="#111111">Bridge</text>
-    <rect x="45" y="80" width="60" height="24" rx="12" fill="#EDF3EC"/>
-    <text x="75" y="97" text-anchor="middle" font-family="Menlo, monospace" font-size="12" fill="#346538">v2</text>
-  </g>
-  <g stroke="#787774" stroke-width="1.5" fill="none" marker-end="url(#arrow)">
-    <path d="M436 350 L462 350"/>
-    <path d="M624 350 L666 350"/>
-    <path d="M666 400 L630 400"/>
-    <path d="M462 400 L436 400"/>
-  </g>
-
-  <!-- 消息日志 -->
-  <g transform="translate(680 150)">
-    <rect width="400" height="450" rx="12" fill="#FFFFFF" stroke="#EAEAEA"/>
-    <line x1="0" y1="40" x2="400" y2="40" stroke="#EAEAEA"/>
-    <g fill="#D9D8D5"><circle cx="20" cy="20" r="5"/><circle cx="38" cy="20" r="5"/><circle cx="56" cy="20" r="5"/></g>
-    <text x="80" y="25" font-family="Menlo, monospace" font-size="12" fill="#787774">bridge.log</text>
-    <g font-family="Menlo, monospace" font-size="14">
-      <text x="24" y="84" fill="#787774">14:02:11.204</text>
-      <text x="24" y="108" fill="#1F6C9F">→ call("share", id: 17)</text>
-      <text x="24" y="130" fill="#2F3437">  { title: "路由实践" }</text>
-      <text x="24" y="172" fill="#787774">14:02:11.389</text>
-      <text x="24" y="196" fill="#346538">← resolve(id: 17)</text>
-      <text x="24" y="218" fill="#2F3437">  { ok: true }</text>
-      <text x="24" y="260" fill="#787774">14:02:12.020</text>
-      <text x="24" y="284" fill="#1F6C9F">→ call("login", id: 18)</text>
-      <text x="24" y="326" fill="#787774">14:02:12.140</text>
-      <text x="24" y="350" fill="#9F2F2D">← reject(id: 18)</text>
-      <text x="24" y="372" fill="#2F3437">  { code: "CANCELLED" }</text>
+  <!-- Manifest -->
+  <g transform="translate(80 110)">
+    <rect width="260" height="150" rx="12" fill="#FFFFFF" stroke="#EAEAEA"/>
+    <text x="24" y="40" font-size="18" font-weight="600" fill="#111111">Manifest</text>
+    <g font-family="Menlo, monospace" font-size="13">
+      <text x="24" y="78" fill="#787774">url:</text><text x="80" y="78" fill="#1F6C9F">/mall/home</text>
+      <text x="24" y="104" fill="#787774">ver:</text><text x="80" y="104" fill="#346538">3.8.2</text>
+      <text x="24" y="130" fill="#787774">env:</text><text x="80" y="130" fill="#2F3437">prod</text>
     </g>
-    <rect x="24" y="398" width="112" height="26" rx="13" fill="#FBF3DB"/>
-    <text x="80" y="415" text-anchor="middle" font-family="Menlo, monospace" font-size="11" fill="#956400">4 MESSAGES</text>
   </g>
+
+  <!-- Cookie / Token -->
+  <g transform="translate(80 470)">
+    <rect width="260" height="170" rx="12" fill="#FFFFFF" stroke="#EAEAEA"/>
+    <text x="24" y="40" font-size="18" font-weight="600" fill="#111111">Cookie 同步</text>
+    <g font-family="Menlo, monospace" font-size="13">
+      <rect x="24" y="60" width="120" height="26" rx="13" fill="#EDF3EC"/><text x="84" y="78" text-anchor="middle" fill="#346538">User Token</text>
+      <rect x="24" y="96" width="120" height="26" rx="13" fill="#EDF3EC"/><text x="84" y="114" text-anchor="middle" fill="#346538">Mall Token</text>
+      <rect x="24" y="132" width="120" height="26" rx="13" fill="#E1F3FE"/><text x="84" y="150" text-anchor="middle" fill="#1F6C9F">SafeArea</text>
+    </g>
+    <text x="236" y="150" text-anchor="end" font-size="22" fill="#346538">✓</text>
+  </g>
+
+  <!-- WKWebView 容器 -->
+  <g transform="translate(430 150)">
+    <rect width="300" height="450" rx="16" fill="#FFFFFF" stroke="#D9D8D5" stroke-width="1.5"/>
+    <text x="24" y="40" font-family="Menlo, monospace" font-size="13" fill="#787774">H5 Container</text>
+    <rect x="20" y="60" width="260" height="280" rx="10" fill="#E1F3FE" stroke="#1F6C9F" stroke-dasharray="5 5" stroke-opacity="0.5"/>
+    <text x="150" y="190" text-anchor="middle" font-size="22" font-weight="600" fill="#1F6C9F">WKWebView</text>
+    <text x="150" y="220" text-anchor="middle" font-family="Menlo, monospace" font-size="12" fill="#1F6C9F">main · secondary</text>
+    <rect x="20" y="356" width="260" height="70" rx="10" fill="#F7F6F3" stroke="#EAEAEA"/>
+    <text x="40" y="386" font-size="15" font-weight="600" fill="#2F3437">Session</text>
+    <text x="40" y="408" font-family="Menlo, monospace" font-size="12" fill="#787774">lifecycle · recover</text>
+    <rect x="186" y="378" width="78" height="26" rx="13" fill="#FBF3DB"/>
+    <text x="225" y="395" text-anchor="middle" font-family="Menlo, monospace" font-size="11" fill="#956400">OOM ↻</text>
+  </g>
+
+  <!-- Native -->
+  <g transform="translate(870 150)">
+    <rect width="250" height="450" rx="16" fill="#111111"/>
+    <text x="24" y="44" font-size="20" font-weight="600" fill="#FFFFFF">Native</text>
+    <g font-size="15" fill="#FFFFFF">
+      <rect x="20" y="70" width="210" height="46" rx="8" fill="#2F3437"/><text x="40" y="99">登录态</text>
+      <rect x="20" y="126" width="210" height="46" rx="8" fill="#2F3437"/><text x="40" y="155">分享</text>
+      <rect x="20" y="182" width="210" height="46" rx="8" fill="#2F3437"/><text x="40" y="211">支付</text>
+      <rect x="20" y="238" width="210" height="46" rx="8" fill="#2F3437"/><text x="40" y="267">跳转</text>
+      <rect x="20" y="294" width="210" height="46" rx="8" fill="#2F3437"/><text x="40" y="323">图片选择</text>
+    </g>
+    <rect x="20" y="370" width="210" height="56" rx="8" fill="none" stroke="#9F2F2D" stroke-dasharray="4 4"/>
+    <text x="40" y="394" font-family="Menlo, monospace" font-size="12" fill="#E8A6A4">JS Error · HTTP</text>
+    <text x="40" y="414" font-family="Menlo, monospace" font-size="12" fill="#E8A6A4">DNS · TLS · Timeout</text>
+  </g>
+
+  <!-- 连线 -->
+  <g stroke="#787774" stroke-width="1.5" fill="none" marker-end="url(#arrow)">
+    <path d="M340 185 L424 250"/>
+    <path d="M340 555 L424 480"/>
+    <path d="M736 330 L864 330"/>
+    <path d="M864 400 L736 400"/>
+  </g>
+  <rect x="752" y="348" width="96" height="30" rx="15" fill="#FFFFFF" stroke="#EAEAEA"/>
+  <text x="800" y="368" text-anchor="middle" font-family="Menlo, monospace" font-size="12" fill="#111111">JS Bridge</text>
+  <text x="800" y="318" text-anchor="middle" font-family="Menlo, monospace" font-size="11" fill="#787774">RPC</text>
+  <text x="800" y="422" text-anchor="middle" font-family="Menlo, monospace" font-size="11" fill="#787774">event</text>
 </svg>

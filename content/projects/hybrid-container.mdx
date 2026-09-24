@@ -1,29 +1,49 @@
 ---
 title: WKWebView 混合容器
-summary: 统一 Native 与 Web 的通信协议，让业务页面可以在两端之间平滑迁移。
+summary: 基于 WKWebView 的 H5 容器，覆盖动态下发、JS Bridge 通信、多 Token Cookie 同步和 WebView 容灾。
 year: "2024"
-role: 负责人
+role: iOS端负责人 & 通信协议制定
 status: 已上线
 tone: yellow
 stack:
   - Swift
   - WKWebView
-  - TypeScript
 featured: true
 cover: /images/projects/hybrid-container.svg
 previewTitle: hybrid-container
 order: 3
 ---
 
-<Callout type="tip">
-  这是示例项目，替换成你自己的项目内容即可。文件位置：`content/projects/hybrid-container.mdx`。
-</Callout>
+## WKWebView 混合架构
 
-## 背景
+- 基于 WKWebView 构建 H5 容器
+- Manifest 动态下发 H5 页面地址与版本信息
+- 统一封装 H5 路由、相对路径和环境域名
+- 支持主 WebView、二级 WebView、内部返回和生命周期管理
+- iOS 16.4 以上的 Debug 包启用 Safari Web Inspector
+- iOS 18.4 以上拦截网页文件选择，调用原生图片选择器
 
-多个业务线各自封装了 WebView，通信方式不统一，问题难以排查。
+## JS Bridge 与原生通信
 
-## 方案
+- 原生与 H5 双向事件通信
+- RPC 请求及异步结果回调
+- 支持登录态变化、商品分享、支付、拨打电话、页面跳转等能力
+- 记录 JS 执行失败、消息解析失败、RPC 超时等异常日志
+- H5 Token 过期后通知原生刷新或退出登录
 
-- 定义一套带版本号的消息协议
-- Native 侧用注册表管理能力，Web 侧提供类型完整的 SDK
+## Cookie 与多 Token 同步
+
+- 同时管理 User Token、Mall Token 和 H5 Manifest
+- 将 Token、用户信息、安全区高度等数据写入 Web Cookie
+- 登录、切换智能体、刷新 Token 后重新同步 Cookie
+- 校验 Cookie 写入结果
+- 退出登录时清理 Web Cookie
+- 使用裁剪后的用户模型控制 Cookie 大小
+
+## WebView 稳定性与容灾
+
+- 将 BaseWebView 拆分为 Coordinator、Session、Store、资源管理、JS 执行器和错误上报模块
+- 用独立的 Session 管理 WebView 生命周期，降低 SwiftUI 重建带来的影响
+- WebKit Content Process 被系统终止或 OOM 后自动恢复
+- 防止 WebView 重复创建、重复加载和内存堆积
+- 采集 JS Error、Unhandled Promise、资源加载、HTTP、DNS、TLS、超时和导航错误
