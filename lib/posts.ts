@@ -1,12 +1,8 @@
 import path from "node:path";
 import { CONTENT_DIR, dateStr, findMdx, listMdx, readMdx, str, stripExt, strList } from "./content";
+import { categories, type Category } from "./categories";
 
-export const categories = {
-  tech: "Technical",
-  life: "Lifestyle",
-} as const;
-
-export type Category = keyof typeof categories;
+export { categories, type Category };
 
 export type PostMeta = {
   slug: string;

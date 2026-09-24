@@ -9,7 +9,8 @@
 | 名字 / 头像 / 简介 / 关于页各区块 / 联系方式 | `lib/site.ts` |
 | 新增项目 | `content/projects/xxx.mdx` |
 | 新增文档 | `content/docs/<分组>/xxx.mdx`（分组目录里放 `index.mdx` 作为概述） |
-| 新增技术文章 | `content/blog/tech/xxx.mdx` |
+| 新增技术文章 | `content/blog/engineering/xxx.mdx` |
+| 新增产品文章 | `content/blog/product/xxx.mdx` |
 | 新增生活文章 | `content/blog/life/xxx.mdx` |
 | 图片 / 封面 | `public/images/`，文中或 frontmatter 的 `cover` 用 `/images/xxx.png` |
 | MDX 可用组件 | `components/mdx/Markdown.tsx` |

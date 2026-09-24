@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { CaretRight } from "@phosphor-icons/react/dist/ssr";
 import ImageFrame from "@/components/ui/ImageFrame";
-import { categories, type PostMeta } from "@/lib/posts";
+import { categories } from "@/lib/categories";
+import type { PostMeta } from "@/lib/posts";
 
 // HIG 分组列表：外层是一张新拟物卡片，里面的行保持扁平，用分隔线区分。
 // inset 为 true 时去掉外层卡片，用于嵌在 Card 里。

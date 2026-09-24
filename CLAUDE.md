@@ -12,7 +12,7 @@
 - **搜索索引**：本地开发时新增或修改内容后，运行 `pnpm search:dev`，搜索才能搜到新内容。
 - **发布**：推送到 `main` 后会自动构建并发布。
 
-## 1. 文章（`content/blog/tech/` 或 `content/blog/life/`）
+## 1. 文章（`content/blog/engineering/`、`content/blog/product/` 或 `content/blog/life/`）
 
 ```yaml
 ---
@@ -25,7 +25,11 @@ draft: false                  # 设为 true 时，列表里不显示，详情页
 ---
 ```
 
-- 分类由所在目录决定，只能是 `tech` 或 `life`，不要在 frontmatter 里写 `category`。
+- 分类由所在目录决定，不要在 frontmatter 里写 `category`。只有三个分类：
+  - `engineering`（技术）：所有技术文章，通用技术和特定平台（iOS 等）都放这里。
+  - `product`（产品）：产品思维、独立开发、设计决策。
+  - `life`（生活）。
+- 不要为具体技术新建分类。具体的技术或主题（如 `iOS`、`SwiftUI`、`Notion`、`AI`）写在 `tags` 里，文章列表支持按 tag 筛选。tag 的写法要保持一致（比如统一写 `iOS`，不要混用 `ios`），分类名本身不用再写成 tag。
 - 首页的头条总是日期最新的那篇文章，所以写日期时要注意这一点。
 
 ## 2. 文档（`content/docs/`）

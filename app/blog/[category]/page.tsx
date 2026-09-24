@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import PostList from "@/components/PostList";
+import FilteredPostList from "@/components/blog/FilteredPostList";
 import Reveal from "@/components/ui/Reveal";
 import { categories, getPosts, isCategory } from "@/lib/posts";
 
@@ -17,14 +17,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return { title: isCategory(category) ? categories[category] : "文档" };
 }
 
-// 页头和分类切换在 layout（BlogChrome）里，这里只渲染该分类的列表。
+// 页头和分类切换在 layout（BlogChrome）里，这里只渲染该分类的列表和 tag 筛选。
 export default async function CategoryPage({ params }: Props) {
   const { category } = await params;
   if (!isCategory(category)) notFound();
 
   return (
     <Reveal className="mt-6">
-      <PostList posts={getPosts(category)} />
+      <FilteredPostList posts={getPosts(category)} />
     </Reveal>
   );
 }

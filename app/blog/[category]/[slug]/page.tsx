@@ -52,7 +52,9 @@ export default async function PostPage({ params }: Props) {
                   {post.date}
                 </time>
                 {post.tags.map((tag) => (
-                  <Tag key={tag}>{tag}</Tag>
+                  <Link key={tag} href={`/blog/?tag=${encodeURIComponent(tag)}`} className="transition-opacity hover:opacity-70">
+                    <Tag>{tag}</Tag>
+                  </Link>
                 ))}
               </div>
               <h1 className="mt-3 text-[32px] font-bold leading-[1.2] tracking-[-0.02em] text-ink-strong sm:text-[40px]">{post.title}</h1>

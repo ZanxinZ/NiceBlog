@@ -25,7 +25,7 @@ export default function Home() {
         ]}
       />
 
-      <PortalPage id="writing" index={1} total={2} title="博客" description="技术实践 & 生活随笔" action={{ href: "/blog/", label: "更多" }}>
+      <PortalPage id="writing" index={1} total={2} title="博客" description="技术实践、产品思考 & 生活随笔" action={{ href: "/blog/", label: "更多" }}>
         <div className="grid gap-6 lg:grid-cols-[1.45fr_1fr]">
           <Reveal className="min-w-0">
             {featured ? (
