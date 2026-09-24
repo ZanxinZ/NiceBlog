@@ -16,6 +16,8 @@ order: 1        # 可选，同组内越小越靠前
 ---
 ```
 
+文档不支持 `draft`，文件放进 `content/docs/` 就会发布。还没写完的文档先不要放进来。
+
 ### 新增分组
 
 新建一个目录，并在里面放一个 `index.mdx`。它的 `title` 就是侧栏里的分组名，`order` 决定分组顺序，正文是分组的概述页。
@@ -44,6 +46,8 @@ draft: false
 ```
 
 ## 新增文章
+
+放在 `content/blog/tech/` 或 `content/blog/life/` 下，分类由所在目录决定，不需要在 frontmatter 里写。
 
 ```md
 ---
