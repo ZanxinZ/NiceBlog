@@ -1,0 +1,117 @@
+---
+title: 基于 Notion 的轻量内容管理 + AI Agent 自动发布工作流
+description: Notion 管内容，Next.js 管前端展示，中间由 Claude 来连接
+date: 2026-09-24
+tags: [Notion, Claude, Next.js]
+---
+
+Notion 管内容，Next.js 管前端展示，中间由 Claude 来连接。
+
+网站架构：`Next.js + TypeScript + MDX + GitHub Actions + GitHub Pages`
+
+## 写作流程
+
+1. 写文章
+2. 告诉 Claude 发布哪一篇或哪一些
+3. 网站自动更新
+
+```text
+Notion
+   ↓ MCP
+Claude
+   ↓
+Next.js
+   ↓ Git Push
+GitHub
+   ↓ Actions
+Build
+   ↓
+GitHub Pages
+   ↓
+Website
+```
+
+这样就能借助 Notion 强大的文档编辑能力，把想法沉淀成文档；经过修改定稿之后，告诉 Claude 写文档并且自动发布到网站。这样，写文章的人就能持续优化文档、持续发布。
+
+```mermaid
+flowchart TD
+    A["① 在 Notion 写文章"]
+
+    subgraph Agent["Claude 自动化处理"]
+        B["② 通过 Notion MCP 获取文章"]
+        C["③ 解析文章结构和元数据"]
+        D["④ 转换成网站所需格式"]
+        E["⑤ 写入 Next.js 项目"]
+        F["⑥ 更新文章索引 / 页面"]
+    end
+
+    G["⑦ Push 到 GitHub"]
+    H["⑧ GitHub Actions 自动构建"]
+    I["⑨ 部署到 GitHub Pages"]
+    J["⑩ 网站出现最新文章"]
+
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+    E --> F
+    F --> G
+    G --> H
+    H --> I
+    I --> J
+```
+
+## 后续扩展
+
+- **GitHub** = 硬盘 / Source of Truth
+- **Notion** = CMS / 内容源
+- **Claude / Codex** = 开发者
+- **Cloud Sandbox** = 开发电脑（后续可扩展优化，让服务读取 Notion、抄写文章、发布，完全放在云端）
+- **GitHub Actions** = DevOps
+- **GitHub Pages** = Web Server
+
+### 可升级架构
+
+```text
+Notion
+   │
+   │ Notion MCP
+   ▼
+Claude Code Web
+   │
+   ├── Cloud Sandbox
+   │     ├── GitHub Repo
+   │     ├── Node.js
+   │     ├── npm / pnpm
+   │     └── Next.js
+   │
+   │ 修改文章格式 / build 检查
+   ▼
+GitHub
+   │
+   ▼
+GitHub Actions
+   │
+   ▼
+GitHub Pages
+```
+
+### 本地 vs 云端
+
+```text title="现有本地架构"
+Mac
+├── Claude Code
+├── Notion MCP
+├── git clone xxx
+├── Next.js
+└── npm
+```
+
+```text title="目标升级架构"
+Claude Cloud Sandbox
+├── Claude Code
+├── Notion MCP
+├── git clone xxx
+├── Next.js
+└── npm
+```
