@@ -32,9 +32,6 @@ jobs:
         with:
           enablement: true
           token: ${{ secrets.PAGES_TOKEN || github.token }}
-        with:
-          enablement: true
-          token: ${{ secrets.PAGES_TOKEN }}
 
       - run: pnpm install --frozen-lockfile
 
