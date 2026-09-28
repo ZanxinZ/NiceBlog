@@ -29,9 +29,6 @@ jobs:
 
       - id: pages
         uses: actions/configure-pages@v5
-        with:
-          enablement: true
-          token: ${{ secrets.PAGES_TOKEN || github.token }}
 
       - run: pnpm install --frozen-lockfile
 
