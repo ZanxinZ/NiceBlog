@@ -79,6 +79,18 @@ draft: false
 
 - 排序规则：先按 `order` 从小到大，`order` 相同时按 `year` 从新到旧。
 
+## 3.1 产品（`content/products/`）
+
+导航栏「Product」页，展示自己上架的 App 等产品。frontmatter 和项目完全一样（读取逻辑也在 `lib/projects.ts`），另外支持：
+
+```yaml
+screenshots:            # 可选，详情页正文前横向滚动展示的截图
+  - /images/products/xxx/1.jpg
+```
+
+- 产品不会出现在首页；`featured` 对产品无效。
+- 图片放在 `public/images/products/` 下。
+
 ## 4. 不在 `content/` 里的内容
 
 名字、头像、简介、关于页的各个区块、联系方式都在 `lib/site.ts` 里改。颜色和字体在 `app/globals.css` 里改。

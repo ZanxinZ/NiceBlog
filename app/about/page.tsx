@@ -150,11 +150,11 @@ export default function About() {
                     href="/docs/"
                     className="inline-flex min-h-11 items-center gap-1 text-[15px] font-medium text-accent"
                   >
-                    全部文档 <CaretRight size={14} weight="bold" />
+                    更多 <CaretRight size={14} weight="bold" />
                   </Link>
                 }
               >
-                网站文档
+                建站文档
               </CardTitle>
               <ul className="flat divide-y divide-edge overflow-hidden rounded-[18px] px-2">
                 {docGroups.map((g) => (

@@ -47,7 +47,7 @@ export default function SegmentedNav({
   }, [pill.visible]);
 
   return (
-    <nav ref={navRef} aria-label={label} className={`neu-inset relative inline-flex items-center gap-1 rounded-full p-1 ${className}`}>
+    <nav ref={navRef} aria-label={label} className={`neu-inset relative inline-flex items-center gap-0.5 rounded-full p-1 sm:gap-1 ${className}`}>
       <span
         aria-hidden
         className={`absolute bottom-1 left-0 top-1 rounded-full bg-well ring-1 ring-edge ${
@@ -65,7 +65,7 @@ export default function SegmentedNav({
             }}
             href={item.href}
             aria-current={active ? "page" : undefined}
-            className={`relative flex h-9 items-center rounded-full px-4 text-[14px] font-medium transition-colors duration-300 ${
+            className={`relative flex h-9 items-center rounded-full px-2 text-[13px] font-medium sm:px-4 sm:text-[14px] transition-colors duration-300 ${
               active ? "text-accent" : "text-muted hover:text-ink-strong"
             }`}
           >

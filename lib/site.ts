@@ -25,11 +25,12 @@ export const site = {
       period: "2026.02 — 至今",
       role: "iOS 开发工程师",
       org: "",
-      summary: "负责 App 整体架构，推动 SwiftUI 迁移。",
+      summary: "",
       highlights: 
-      [ "负责电商购物 App 整体业务", 
-        "设计 WKWebView 混合容器，规范 Native 与 Web 的通信", 
-        "内存监控，WebView 生命周期监控"
+      [ "电商购物 App iOS 端开发和迭代", 
+        "WKWebView 混合容器方案确立与开发，规范 Native 与 Web 的通信", 
+        "App 内存监控，WebView 生命周期监控",
+        "重构网络请求框架，让代码调用更规范"
       ],
     },
     {
@@ -51,6 +52,7 @@ export const site = {
 
 export const nav = [
   { href: "/blog/", label: "Blog" },
+  { href: "/products/", label: "Product" },
   { href: "/projects/", label: "Project" },
   { href: "/about/", label: "About", also: ["/docs/"] },
 ] as const;

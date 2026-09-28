@@ -39,10 +39,10 @@ function urlFor(file) {
     const parts = rest.at(-1) === "index" ? rest.slice(0, -1) : rest;
     return `/docs/${parts.map((p) => p + "/").join("")}`;
   }
-  return `/${type === "projects" ? "projects" : "blog"}/${rest.join("/")}/`;
+  return `/${type === "projects" || type === "products" ? type : "blog"}/${rest.join("/")}/`;
 }
 
-const files = ["blog", "docs", "projects"].flatMap((d) => walk(path.join(CONTENT, d)));
+const files = ["blog", "docs", "projects", "products"].flatMap((d) => walk(path.join(CONTENT, d)));
 
 const { index, errors } = await pagefind.createIndex({ forceLanguage: "zh-cn" });
 if (!index) throw new Error(`Pagefind 初始化失败：${errors?.join("; ")}`);

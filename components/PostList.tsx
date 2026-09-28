@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { CaretRight } from "@phosphor-icons/react/dist/ssr";
+import HoverPreview from "@/components/ui/HoverPreview";
 import ImageFrame from "@/components/ui/ImageFrame";
 import { categories } from "@/lib/categories";
 import type { PostMeta } from "@/lib/posts";
@@ -34,7 +35,11 @@ export default function PostList({
             href={`/blog/${post.category}/${post.slug}/`}
             className="group flex min-h-11 items-center gap-4 rounded-[20px] px-3 py-4 transition-colors hover:bg-well"
           >
-            {thumbnails && <ImageFrame src={post.cover} alt="" ratio="1/1" compact className="w-14 shrink-0" />}
+            {thumbnails && (
+              <HoverPreview src={post.cover} alt={post.title}>
+                <ImageFrame src={post.cover} alt="" ratio="1/1" compact className="w-14 shrink-0" />
+              </HoverPreview>
+            )}
             <div className="min-w-0 flex-1">
               <p className="truncate text-[16px] font-semibold text-ink-strong">{post.title}</p>
               {post.description && <p className="mt-0.5 line-clamp-1 text-[14px] text-muted">{post.description}</p>}

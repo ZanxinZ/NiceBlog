@@ -1,5 +1,5 @@
 const widths = {
-  wide: "max-w-6xl",
+  wide: "max-w-screen-2xl",
   prose: "max-w-3xl",
 } as const;
 
