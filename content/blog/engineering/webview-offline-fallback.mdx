@@ -1,0 +1,398 @@
+---
+title: WebView 弱网防止白屏
+description: 对比 Offline-first H5 与 Online-first with Local Fallback 两种方案的流程、边界和改动量
+date: 2026-09-28
+cover: /images/blog/webview-offline-fallback.svg
+tags: [iOS, WKWebView]
+---
+
+两种解决方式：
+
+1. **Offline-first H5**：原生完整兜底，存储真正的 H5（H5 端改动量较大，原生需要部分改动）。更合理的方式，主流方案。
+2. **Online-first with Local Fallback**：作用类似于无网络占位，只是看起来界面更连贯、能重试加载、能加入更多 H5 展示和基础交互（iOS 已经实现，可行，能起到防止白屏作用）。
+
+<Callout type="tip">
+基于现有项目情况，推荐使用 Online-first with Local Fallback，已经足够防白屏。
+</Callout>
+
+## 一、Offline-first H5
+
+本地正式 H5 直接启动，联网后请求数据。
+
+本地静态框架立即运行；业务数据正常由 H5 自己请求；失败后保持已有页面结构和数据，等待网络恢复事件再增量重试。
+
+推荐流程如下：
+
+```text
+加载本地 HTML/JS/CSS
+→ 立即渲染页面框架
+→ 读取本地缓存数据
+→ 各业务模块并行请求接口
+→ 成功则局部更新
+→ 失败则局部展示离线/错误状态
+→ 网络恢复后只重试失败或过期的模块
+```
+
+### 1. 正常联网
+
+H5 不需要等 Native 通知「网络正常」才开始工作，可以直接请求：
+
+```text
+页面启动
+→ 首页模块请求首页接口
+→ 推荐模块请求推荐接口
+→ 用户模块请求用户接口
+```
+
+Native 可以在文档启动时注入初始网络状态。如果明确知道当前离线，H5 可以暂时跳过必然失败的请求。
+
+### 2. 断网时
+
+不要清空整个页面，也不要退回统一错误页：
+
+- 导航、Tab、页面框架：继续展示
+- 已有数据：继续保留
+- 无缓存模块：展示离线空状态
+- 提交、支付等操作：禁用并提示网络不可用
+
+每个业务模块最好具有独立状态：
+
+```text
+loading
+offline
+error
+```
+
+Native 通过 Bridge 通知：
+
+```json
+{
+  "action": "networkChanged",
+  "payload": {
+    "isConnected": true
+  }
+}
+```
+
+H5 收到后：
+
+- 防抖 1～2 秒；
+- 合并重复请求；
+- 只刷新失败或已过期的模块；
+- 保留当前路由、滚动位置和已有内容；
+- 请求成功后取消离线提示。
+
+<Callout type="warn">
+Native 的网络状态只能说明「存在网络连接」，不能保证业务服务器一定可访问。最终仍然要以接口请求是否成功为准。
+</Callout>
+
+### 3. Bridge 的职责
+
+Bridge 主要负责：
+
+- 提供初始网络状态；
+- 通知网络状态变化；
+- 提供 Token、设备信息；
+- 承担 Native 专属能力，例如支付、分享、文件选择。
+
+不建议把所有普通业务接口都改成 Native Bridge 请求，否则 Bridge 会越来越重。业务 API 仍由 H5 直接请求更简单，但需要解决本地 H5 来源请求远端接口时的：
+
+- CORS；
+- Token 注入；
+- Cookie/SameSite；
+- API 域名配置。
+
+如果现有接口主要依赖 Cookie，需要提前验证本地自定义协议页面请求 HTTPS 接口时的 Cookie 行为；更稳定的方式通常是 H5 从 Bridge 获取短期 Token，然后通过请求头访问业务接口。
+
+所以最终模型是：
+
+- 本地正式 H5 = 页面运行环境和完整 UI
+- 远端 API = 动态业务数据
+- Native Bridge = 网络、认证和系统能力通知
+
+这样网络恢复时不需要切换页面、重建 WebView，也不需要重新显示 Fallback，只需让各业务模块恢复请求即可。
+
+## 二、Online-first with Local Fallback
+
+覆盖一层静态资源页，让加载期间不白屏。
+
+本地占位页覆盖远端 H5，远端准备完成后整体替换。它解决的是「加载期间不要白屏」，但不是 offline-first 的正式页面。
+
+### 1. 页面启动方式
+
+当前一级页面同时维护两套 WebView：
+
+- 上层：`H5FallbackWebView`，本地加载
+- 下层：`BaseWebView`，远端加载
+
+首次进入时：
+
+```text
+isRemotePageReady = false
+→ 立即展示本地 Fallback
+→ 等待登录会话准备
+→ 请求 Manifest
+→ 解析 Remote URL
+→ 底层加载远端 H5
+```
+
+Fallback 使用 `appName-fallback://` 读取 App 内资源，不依赖网络，因此可以快速展示骨架页面：`xxxx/H5FallbackWebView.swift`。
+
+### 2. 正常联网
+
+正常流程是：
+
+```text
+本地 Fallback 展示骨架
+→ Remote H5 在底层加载
+→ Remote H5 发送 pageReady
+→ isRemotePageReady = true
+→ Fallback 淡出并销毁
+→ 展示 Remote H5
+```
+
+切换的判断标准不是 `WKWebView.didFinish`，而是 H5 主动发送 `pageReady`，这能避免 HTML 加载完成、但业务页面还没有真正渲染时过早切换。
+
+### 3. 加载较慢时
+
+Fallback 内部使用独立计时器控制展示状态：
+
+| 时间 | 展示状态 |
+| --- | --- |
+| 0～3 秒 | 正在加载 |
+| 3～10 秒 | 网络较慢 |
+| 超过 10 秒 | 网络异常/离线 |
+
+这些状态只是 Fallback 自己的展示计时，并不代表 Native 已经准确判断出网络错误：`xxxx/fallback.js`。
+
+因此存在一个语义偏差：
+
+- 登录会话准备较慢；
+- Manifest 接口较慢；
+- H5 初始化较慢；
+- 业务接口较慢；
+
+最终都可能统一显示成「网络异常」。
+
+### 4. 断网时
+
+首次进入即断网时：
+
+```text
+Fallback 仍可正常打开
+→ Remote WebView 因无网络不加载
+→ Fallback 3 秒后显示慢
+→ 10 秒后显示离线
+```
+
+Fallback 页面本身不请求业务接口，也没有正式业务能力，只展示近似页面结构和重试按钮。
+
+它能够保证「不白屏」，但不能保证：
+
+- 展示上次业务数据；
+- 浏览已有内容；
+- 模块级恢复；
+- 保留正式页面的业务状态。
+
+**所以它本质上是「美化后的加载/错误占位页」。**
+
+### 5. 用户点击重试
+
+Fallback 通过 Bridge 发送：`fallbackRetry`。
+
+Native 收到后：
+
+```text
+检查是否正在重试
+→ 检查 NetworkMonitor
+→ 重新获取 Manifest
+→ 获取 Remote URL
+→ 重新加载远端 WebView
+→ 等待新的 pageReady
+→ 移除 Fallback
+```
+
+如果 Native 判断仍然没有网络：
+
+```text
+不执行 Remote 加载
+→ Toast 提示网络不可用
+→ 向 Fallback 发送 offline 状态
+```
+
+Bridge 消息会校验协议版本、页面、资源包版本和 `navigationId`，安全边界是比较完整的。
+
+### 6. 网络恢复时
+
+现有一级页面没有直接监听 `networkMonitor.isConnected` 的变化来自动执行 `retryManifest()`。
+
+因此用户保持在当前页面时，网络恢复后通常需要：
+
+- 主动点击 Fallback 的重试按钮；或者
+- App 重新进入前台，触发页面再次尝试加载。
+
+也就是说，现有 Fallback 是「用户触发恢复」，不是完整的「网络恢复后自动恢复」。
+
+`BaseWebView` 虽然存在页面加载和 WebContent 进程恢复机制，但不能替代一级页面对网络恢复的直接响应。
+
+### 7. Fallback 资源更新
+
+现有资源来源分为两级：
+
+```text
+已下载安装的 Fallback 包
+→ 不可用时回退到 App Bundle 内置包
+```
+
+Manifest 获取成功后，会在后台下载安装新包：
+
+```text
+下载到 staging
+→ 校验大小和 SHA-256
+→ 解压并校验 package.json
+→ 发布到 versions/<version>
+→ 更新 current.json
+→ 保留上一版本
+```
+
+这一部分已经具备较完整的原子安装和回滚基础。
+
+不过页面中的 `fallbackPage` 在 View 创建时就已经解析完成。因此当前页面运行期间下载安装的新版本，通常不会立即替换正在使用的 Fallback，需要页面重新创建后才会采用新版本。
+
+### 8. 现有职责划分
+
+当前几个模块的职责比较清晰：
+
+| 模块 | 职责 |
+| --- | --- |
+| `LocalH5Service` | 选择已安装包或内置包，并解析页面入口 |
+| `H5FallbackWebView` | 加载本地页面、维护状态、转发重试事件 |
+| `H5Home/Mine/PromotionView` | 同时管理 Remote WebView 和 Fallback 的显示切换 |
+| `H5ManifestManager` | 获取远端地址，并后台更新 Fallback 资源包 |
+
+### 9. 与 offline-first 的核心区别
+
+| | 现有方案 | offline-first 方案 |
+| --- | --- | --- |
+| 本地 | Fallback：只负责等待和错误提示 | 正式 H5：负责完整页面结构和业务运行环境 |
+| 远端 | Remote H5：负责全部正式业务 | 远端 API：只负责动态数据 |
+| 网络恢复 | 重新加载整个 Remote 页面 | 各业务模块重新请求失败数据 |
+
+因此，现有方案的优点是改造成本低、职责明确，能够快速解决首次进入白屏；缺点是维护两套页面、占用两个 WebView、存在切换感，并且断网时只有「看起来像页面」的骨架，没有真正的页面能力。
+
+一句话总结：
+
+> 现有 Fallback 是「远端页面加载完成前的本地遮罩层」；它解决白屏问题，但没有解决正式 H5 的离线启动和网络自动恢复问题。
+
+## 三、小结
+
+| 方案 | 做法 | 定位 |
+| --- | --- | --- |
+| Offline-first | 本地正式 H5 直接启动，联网后请求数据 | 网络不是页面启动的前提 |
+| Online-first with Local Fallback | 本地占位页覆盖、等待远端正式 H5 | 正式业务依赖远端，本地只负责兜底 |
+
+### First 表示架构设计的优先顺序
+
+#### Offline-first H5
+
+先保证没有网络也能启动和展示 → 再利用网络获取数据、同步状态和更新资源。
+
+Offline-first 的页面启动流程是：
+
+```text
+本地 HTML/JS/CSS
+→ 页面立即可运行
+→ 展示缓存或离线状态
+→ 有网络时获取最新数据
+```
+
+**网络属于「增强条件」，而不是「启动条件」。**
+
+#### Online-first with Local Fallback
+
+```text
+本地 Fallback 只是占位
+→ 必须加载 Remote H5
+→ 收到 pageReady
+→ 才进入正式页面
+```
+
+所以它只是视觉上的「本地先展示」，业务运行逻辑仍然是：优先等待在线正式页面 → 在线失败才持续展示本地兜底。
+
+因此属于 Online-first / Remote-first。
+
+## 四、方案改动量评估
+
+H5 侧改动明显更大，Native 侧属于架构调整，但工作量相对可控。
+
+大致可以按下面比例理解：
+
+| 端 | 预计占比 | 主要工作 |
+| --- | --- | --- |
+| H5 | 65%～75% | 正式资源本地化、缓存、模块状态、请求治理、离线交互、增量恢复 |
+| Native | 25%～35% | 单 WebView、本地包加载、网络事件 Bridge、启动链路解耦、资源更新与回滚 |
+
+### 1. H5 改动为什么更大
+
+当前 Fallback 只是静态骨架。要升级成 Offline-first，H5 需要真正具备完整业务运行能力：
+
+- 完整正式 H5 构建产物支持本地协议运行；
+- 所有静态资源去除远端启动依赖；
+- 处理自定义协议下的路由和动态 Chunk；
+- 每个业务模块建立 loading/offline/error/success 状态；
+- 增加 IndexedDB 数据缓存；
+- 处理用户隔离、过期时间和缓存迁移；
+- 请求去重、失败记录、防抖和增量重试；
+- 离线时保留旧数据；
+- 提交、支付等强在线操作的禁用状态；
+- Token 获取、刷新和 401 恢复；
+- CORS、CSP、API 域名等适配。
+
+其中最耗时的不是「把 H5 放进 App」，而是把现有页面从「请求失败就报错或整页重载」，改造成「每个模块独立降级和恢复」。
+
+### 2. Native 改动主要集中在基础设施
+
+Native 改动范围比较集中：
+
+- `BaseWebView` 支持加载正式本地包；
+- 自定义 Scheme Handler 从 Fallback 中抽取；
+- Home/Mine/Promotion 删除双 WebView；
+- 页面启动不再等待 Manifest、Cookie 和完整 Token 链路；
+- Bridge 增加初始网络状态和 `networkChanged`；
+- Manifest 转为后台资源更新职责；
+- 现有安装器补充正式包运行确认和回滚。
+
+Native 代码改动可能涉及的文件不少，但业务逻辑不复杂，很多现有能力可以复用，例如：
+
+- 本地包选择；
+- 下载和 SHA-256 校验；
+- 原子安装；
+- Bridge；
+- Token RPC；
+- NetworkMonitor；
+- WebEventBus。
+
+### 3. 具体还取决于 H5 现状
+
+如果当前 H5 已经具备：
+
+- 模块化请求；
+- IndexedDB 或持久化缓存；
+- Token Header 认证；
+- 页面局部错误状态；
+- SPA 相对资源路径；
+
+那么比例可能接近 H5 55% / Native 45%。
+
+如果当前 H5：
+
+- 强依赖 SSR；
+- 首屏 HTML 必须由服务端动态生成；
+- 静态资源大量使用绝对 CDN 地址；
+- 主要依赖 Cookie；
+- 接口失败统一进入全局错误页；
+- 网络恢复依赖刷新整个页面；
+
+那么 H5 可能占到 80% 以上，甚至要重新整理应用启动和数据层。
+
+Native 负责「确保本地 H5 能启动并通知环境变化」，H5 负责「断网时仍然像一个正式应用一样运行」。后者涉及整个业务页面的数据生命周期，所以工作量更大。

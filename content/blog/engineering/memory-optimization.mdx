@@ -1,0 +1,79 @@
+---
+title: 内存管理优化：代码稳定性
+description: 从静态预防、运行时定位到自动化回归，整理 iOS 内存泄漏的排查思路
+date: 2026-09-28
+cover: /images/blog/memory-optimization.svg
+tags: [iOS, SwiftUI]
+---
+
+静态预防、运行时定位、自动化回归。
+
+## 1. 代码审查：检查循环引用
+
+- 闭包长期持有 `self`
+- `delegate` 没有声明为 `weak`
+- `Timer`、`CADisplayLink` 持有对象
+- `NotificationCenter.addObserver(forName:...)` 的闭包和 observer token
+- Combine 的 `sink` 与 `Set<AnyCancellable>`
+- 不会结束的 `Task`、`AsyncSequence`
+- `WKScriptMessageHandler`
+- 父子对象相互强引用
+
+## 2. Xcode Memory Graph
+
+建议操作流程：
+
+1. 打开目标页面。
+2. 完成网络请求、弹窗、播放器等典型操作。
+3. 退出页面。
+4. 重复进入、退出 2～3 次。
+5. 点击 Xcode 的 Debug Memory Graph。
+6. 搜索对应的 ViewModel、UIViewController 或业务对象。
+7. 查看对象数量以及右侧的引用路径。
+
+重点判断：
+
+- 页面退出后实例是否仍然存在。
+- 每次进入退出后实例数量是否持续增加。
+- 是谁通过 strong reference 保留了它。
+- 是否存在闭包、`Task`、`Timer` 或订阅链路。
+
+## 3. Instruments 检查
+
+- **Allocations**：观察某种对象是否持续增长。
+- **Leaks**：检查已经无法访问、但没有释放的内存。
+- **VM Tracker**：分析图片、映射文件、大块虚拟内存。
+- **Time Profiler**：排查频繁分配是不是由重复计算或重复创建对象引起。
+
+<Callout type="tip">
+Allocations 的实用方式是使用 Generation：
+
+1. 进入页面前标记一次 Generation。
+2. 进入并退出页面。
+3. 再标记一次。
+4. 重复几轮。
+5. 查看哪些业务对象跨多轮仍然存活。
+</Callout>
+
+## 4. SwiftUI 的泄漏点
+
+SwiftUI 的 View 是值类型，泄漏通常发生在它持有或关联的引用对象里：
+
+- `@State` 持有的 `@Observable` 对象
+- ViewModel 创建的长期 `Task`
+- Combine 订阅
+- Coordinator
+- UIKit 包装对象
+- Navigation、sheet 或 closure 捕获的业务对象
+
+## 优化结果
+
+排查并优化后，内存不会过度累积，基本平稳。
+
+进入二级 WebView、退出 WebView：
+
+![进入并退出二级 WebView 的内存曲线](/images/blog/memory-optimization/webview-memory.jpg)
+
+创建智能体任务，回到主页：
+
+![创建智能体任务后回到主页的内存曲线](/images/blog/memory-optimization/agent-task-memory.jpg)

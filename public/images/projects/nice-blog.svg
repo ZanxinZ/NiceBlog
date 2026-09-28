@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" font-family="-apple-system, 'PingFang SC', 'Helvetica Neue', sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E9EDF3"/><stop offset="1" stop-color="#DDE4ED"/></linearGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="12" dy="12" stdDeviation="14" flood-color="#A3ACBA" flood-opacity="0.55"/><feDropShadow dx="-10" dy="-10" stdDeviation="12" flood-color="#FFFFFF" flood-opacity="0.9"/></filter>
+    <filter id="soft-sm" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="6" dy="6" stdDeviation="7" flood-color="#A3ACBA" flood-opacity="0.5"/><feDropShadow dx="-5" dy="-5" stdDeviation="6" flood-color="#FFFFFF" flood-opacity="0.9"/></filter>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#bg)"/>
+
+  <!-- 浏览器窗口 -->
+  <g filter="url(#soft)"><rect x="110" y="90" width="1380" height="820" rx="40" fill="#ECEEF2"/></g>
+  <circle cx="170" cy="150" r="10" fill="#FF5F57"/><circle cx="202" cy="150" r="10" fill="#FEBC2E"/><circle cx="234" cy="150" r="10" fill="#28C840"/>
+  <rect x="560" y="126" width="480" height="48" rx="24" fill="#E4E7EC"/>
+  <text x="800" y="158" text-anchor="middle" font-family="Menlo, monospace" font-size="20" fill="#6E6E73">yourname.github.io</text>
+
+  <!-- 导航 -->
+  <g filter="url(#soft-sm)"><circle cx="200" cy="250" r="30" fill="#ECEEF2"/></g>
+  <text x="200" y="259" text-anchor="middle" font-size="22" font-weight="600" fill="#0071E3">YN</text>
+  <rect x="1010" y="222" width="360" height="56" rx="28" fill="#E4E7EC"/>
+  <g filter="url(#soft-sm)"><rect x="1018" y="230" width="112" height="40" rx="20" fill="#ECEEF2"/></g>
+  <g font-size="20" font-weight="500"><text x="1074" y="257" text-anchor="middle" fill="#0071E3">文档</text><text x="1190" y="257" text-anchor="middle" fill="#6E6E73">项目</text><text x="1300" y="257" text-anchor="middle" fill="#6E6E73">关于</text></g>
+
+  <!-- 大标题 -->
+  <text x="176" y="370" font-size="54" font-weight="700" fill="#1D1D1F">文档</text>
+  <text x="176" y="418" font-size="24" fill="#6E6E73">技术实践与生活随笔</text>
+
+  <!-- 精选文章卡片 -->
+  <g filter="url(#soft)"><rect x="176" y="470" width="740" height="380" rx="32" fill="#ECEEF2"/></g>
+  <rect x="198" y="492" width="696" height="230" rx="22" fill="#E1ECF8"/>
+  <rect x="226" y="752" width="360" height="22" rx="11" fill="#1D1D1F" opacity="0.85"/>
+  <rect x="226" y="792" width="520" height="16" rx="8" fill="#6E6E73" opacity="0.5"/>
+
+  <!-- 右侧卡片 -->
+  <g filter="url(#soft)">
+    <rect x="964" y="340" width="460" height="200" rx="32" fill="#ECEEF2"/>
+    <rect x="964" y="580" width="460" height="270" rx="32" fill="#ECEEF2"/>
+  </g>
+  <g filter="url(#soft-sm)"><circle cx="1040" cy="416" r="40" fill="#ECEEF2"/></g>
+  <rect x="1104" y="398" width="200" height="18" rx="9" fill="#1D1D1F" opacity="0.8"/>
+  <rect x="1104" y="428" width="150" height="14" rx="7" fill="#6E6E73" opacity="0.5"/>
+  <rect x="1000" y="478" width="120" height="36" rx="18" fill="#0071E3"/>
+  <g fill="#6E6E73" opacity="0.45">
+    <rect x="1000" y="620" width="300" height="16" rx="8"/><rect x="1000" y="652" width="220" height="12" rx="6"/>
+    <rect x="1000" y="708" width="330" height="16" rx="8"/><rect x="1000" y="740" width="240" height="12" rx="6"/>
+    <rect x="1000" y="796" width="280" height="16" rx="8"/>
+  </g>
+  <line x1="1000" y1="684" x2="1390" y2="684" stroke="#000" stroke-opacity="0.06" stroke-width="2"/>
+  <line x1="1000" y1="772" x2="1390" y2="772" stroke="#000" stroke-opacity="0.06" stroke-width="2"/>
+</svg>

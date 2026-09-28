@@ -1,0 +1,59 @@
+---
+title: SwiftUI Navigation 的一些实践
+description: 我的 SwiftUI NavigationStack 架构整理
+date: 2026-09-23
+cover: /images/blog/swiftui-navigation.svg
+tags: [iOS, SwiftUI]
+---
+
+这是一篇示例技术文章。新增文章只需要在 `content/blog/engineering/` 下创建一个 `.mdx` 文件。
+
+## 背景
+
+iOS 16 引入的 `NavigationStack` 让基于数据的导航成为可能。
+
+## 实现
+
+```swift title="RootView.swift" {9-12}
+enum Route: Hashable {
+    case detail(id: String)
+    case settings
+}
+
+struct RootView: View {
+    @State private var path: [Route] = []
+
+    var body: some View {
+        NavigationStack(path: $path) {
+            HomeView()
+                .navigationDestination(for: Route.self) { route in
+                    switch route {
+                    case .detail(let id): DetailView(id: id)
+                    case .settings: SettingsView()
+                    }
+                }
+        }
+    }
+}
+```
+
+<Callout>
+  MDX 里可以直接使用 React 组件，比如这个 Callout。组件在 `components/mdx/Markdown.tsx` 中注册。
+</Callout>
+
+## 导航流程
+
+路径数组的变化直接对应页面的进出：
+
+```mermaid
+flowchart TD
+    Home[首页] -- "path.append(.detail)" --> Detail[详情]
+    Detail -- "path.append(.settings)" --> Settings[设置]
+    Settings -- "path.removeLast()" --> Detail
+    Detail -- "path = []" --> Home
+```
+
+## 小结
+
+- 路由集中定义
+- 路径即状态，方便深链接和恢复

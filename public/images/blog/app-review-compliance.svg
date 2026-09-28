@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" font-family="-apple-system, 'PingFang SC', 'Helvetica Neue', sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E9EDF3"/><stop offset="1" stop-color="#DCE3EC"/></linearGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="14" dy="14" stdDeviation="16" flood-color="#A3ACBA" flood-opacity="0.55"/><feDropShadow dx="-12" dy="-12" stdDeviation="14" flood-color="#FFFFFF" flood-opacity="0.9"/></filter>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#bg)"/>
+
+  <!-- 清单卡片 -->
+  <g filter="url(#soft)">
+    <rect x="300" y="180" width="560" height="640" rx="56" fill="#EEF1F5"/>
+    <rect x="960" y="280" width="340" height="340" rx="56" fill="#EEF1F5"/>
+  </g>
+  <rect x="340" y="220" width="480" height="560" rx="32" fill="#FFFFFF"/>
+
+  <g font-size="30" fill="#1D1D1F">
+    <g transform="translate(390 310)">
+      <circle r="22" fill="#30A46C"/><path d="M-10 0 L-2 8 L11 -8" stroke="#FFFFFF" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="44" y="11">同意后再初始化 SDK</text>
+    </g>
+    <g transform="translate(390 410)">
+      <circle r="22" fill="#30A46C"/><path d="M-10 0 L-2 8 L11 -8" stroke="#FFFFFF" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="44" y="11">定位 · 人脸 · 语音单独同意</text>
+    </g>
+    <g transform="translate(390 510)">
+      <circle r="22" fill="#30A46C"/><path d="M-10 0 L-2 8 L11 -8" stroke="#FFFFFF" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="44" y="11">第三方 SDK 清单</text>
+    </g>
+    <g transform="translate(390 610)">
+      <circle r="22" fill="#30A46C"/><path d="M-10 0 L-2 8 L11 -8" stroke="#FFFFFF" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="44" y="11">避免 IAP 误判措辞</text>
+    </g>
+    <g transform="translate(390 710)">
+      <circle r="22" fill="#30A46C"/><path d="M-10 0 L-2 8 L11 -8" stroke="#FFFFFF" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="44" y="11">只下发 JSON/DSL 配置</text>
+    </g>
+  </g>
+
+  <!-- 盾牌 -->
+  <g transform="translate(1130 450)">
+    <path d="M0 -110 L90 -76 V0 C90 60 50 96 0 116 C-50 96 -90 60 -90 0 V-76 Z" fill="#0071E3" opacity="0.18"/>
+    <path d="M0 -80 L64 -56 V0 C64 42 36 68 0 84 C-36 68 -64 42 -64 0 V-56 Z" fill="#0071E3"/>
+    <path d="M-26 2 L-6 22 L30 -20" stroke="#FFFFFF" stroke-width="12" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <text x="1130" y="690" font-size="32" font-weight="600" text-anchor="middle" fill="#1D1D1F">App 审核合规</text>
+  <text x="1130" y="732" font-size="24" text-anchor="middle" fill="#6E6E73">隐私 · 权限 · 披露</text>
+</svg>

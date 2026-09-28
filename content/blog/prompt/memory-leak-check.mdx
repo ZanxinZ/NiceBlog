@@ -1,0 +1,28 @@
+---
+title: 内存泄漏检查
+description: 让 AI 审查 iOS 代码时逐项排查的循环引用与 SwiftUI 泄漏点
+date: 2026-09-27
+cover: /images/blog/memory-leak-check.svg
+tags: [iOS, SwiftUI]
+---
+
+## 1. 循环引用检查
+
+- 闭包长期持有 `self`
+- `delegate` 没有声明为 `weak`
+- `Timer`、`CADisplayLink` 持有对象
+- `NotificationCenter.addObserver(forName:...)` 的闭包和 observer token
+- Combine 的 `sink` 与 `Set<AnyCancellable>`
+- 不会结束的 `Task`、`AsyncSequence`
+- `WKScriptMessageHandler`
+
+## 2. SwiftUI
+
+SwiftUI 的 View 是值类型，泄漏通常发生在它持有或关联的引用对象里：
+
+- `@State` 持有的 `@Observable` 对象
+- ViewModel 创建的长期 `Task`
+- Combine 订阅
+- Coordinator
+- UIKit 包装对象
+- Navigation、sheet 或 closure 捕获的业务对象

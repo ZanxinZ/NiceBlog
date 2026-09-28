@@ -1,0 +1,81 @@
+---
+title: NavigationLink 导航不稳定问题
+description: iOS 15 下 NavigationView 异常 pop、重复进入的原因，以及改用 UINavigationController 后的右滑返回处理
+date: 2026-09-28
+cover: /images/blog/navigationlink-instability.svg
+tags: [iOS, SwiftUI]
+---
+
+项目最低支持 iOS 15.6，但 iOS 16 以下不能使用 `NavigationStack`，只能用旧式的 `NavigationView`，常常由于使用不规范或是一些隐藏细节，导致导航页面异常 pop 或多次重进入的问题。
+
+一开始是用 `InvisibleNavigationLink` 来解决 link 未显示问题。
+
+后来直接使用 `UINavigationController`，彻底解决 `NavigationView` 导航页面不稳定的问题，并且监听其 pop 进度：
+
+- 交互返回成功：`began → changed → willFinish → completed`
+- 交互返回取消：`began → changed → willCancel → cancelled`
+
+## NavigationLink 的写法
+
+```swift
+// 不要使用纯 NavigationLink 的写法，在某些版本系统上，如果视图内容空，NavigationLink 仍然可能被显示出来。
+NavigationLink(
+    destination: NextView(),
+    isActive: $jumpToNext) {
+}
+
+// 现行解决方法是使用一个 InvisibleNavigationLink，但仍旧存在导航不稳定问题
+NavigationLink(
+    destination: destination,
+    isActive: $isActive
+) {
+    EmptyView()
+}
+.hidden()
+```
+
+## 不要条件渲染 InvisibleNavigationLink
+
+```swift
+// 不要使用条件来决定是否渲染 InvisibleNavigationLink，
+// 一旦条件变化（可能某些 Publish 订阅状态变化导致），会导致 InvisibleNavigationLink 重新渲染初始化，内部栈结构意外 pop
+// 正确做法是直接固定展示 InvisibleNavigationLink
+if (selectedId != nil) {
+    InvisibleNavigationLink(
+        destination: UploadView(id: selectedId!),
+        isActive: $jumpToUpload)
+}
+
+// 尤其这种，最容易因为 currSelectItem 变化导致页面重算 diff
+if let item = currSelectItem {
+    InvisibleNavigationLink(
+        destination: ItemDetailView(item: item),
+        isActive: $jumpToItemDetail)
+}
+```
+
+## 右滑返回手势
+
+另外一个问题：`UINavigationController` 原本就有 `interactivePopGestureRecognizer`，但它默认使用 UIKit 内部的私有代理判断手势能否开始。
+
+使用 InvisibleNavigation 后，导航栏/返回按钮的状态可能不符合系统默认交互式返回的判断条件，导致内部代理返回 `false`。
+
+原本 App 各个页面不支持右滑手势返回，于是基于 `gestureRecognizerShouldBegin` 加上自定义返回判断，绕开 UIKit 内部与导航栏、返回按钮有关的限制。
+
+```swift
+public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+    // 1. 根控制器永远不允许
+    guard viewControllers.count > 1 else { return false }
+
+    // 2. 取当前顶部 VC
+    guard let topVC = topViewController else { return true }
+
+    // 3. 如果 VC 自己声明了控制权，尊重它
+    if let vc = topVC as? InteractivePopControllable {
+        return vc.allowsInteractivePopGesture
+    }
+
+    // 4. 默认允许（系统行为）
+    return true
+}
+```

@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" font-family="-apple-system, 'PingFang SC', 'Helvetica Neue', sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E9EDF3"/><stop offset="1" stop-color="#DCE3EC"/></linearGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="14" dy="14" stdDeviation="16" flood-color="#A3ACBA" flood-opacity="0.55"/><feDropShadow dx="-12" dy="-12" stdDeviation="14" flood-color="#FFFFFF" flood-opacity="0.9"/></filter>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#bg)"/>
+
+  <!-- 代码卡片 -->
+  <g filter="url(#soft)">
+    <rect x="130" y="170" width="760" height="660" rx="40" fill="#EEF1F5"/>
+  </g>
+  <g transform="translate(130 170)">
+    <circle cx="52" cy="52" r="9" fill="#FF5F57"/><circle cx="82" cy="52" r="9" fill="#FEBC2E"/><circle cx="112" cy="52" r="9" fill="#28C840"/>
+    <text x="150" y="58" font-family="Menlo, monospace" font-size="20" fill="#6E6E73">RootView.swift</text>
+    <g font-family="Menlo, monospace" font-size="27">
+      <text x="56" y="150"><tspan fill="#AD3DA4">enum</tspan><tspan fill="#1D1D1F"> Route: </tspan><tspan fill="#0060BF">Hashable</tspan><tspan fill="#1D1D1F"> {</tspan></text>
+      <text x="56" y="196"><tspan fill="#AD3DA4">    case</tspan><tspan fill="#1D1D1F"> detail(id: </tspan><tspan fill="#0060BF">String</tspan><tspan fill="#1D1D1F">)</tspan></text>
+      <text x="56" y="242"><tspan fill="#AD3DA4">    case</tspan><tspan fill="#1D1D1F"> settings</tspan></text>
+      <text x="56" y="288" fill="#1D1D1F">}</text>
+      <text x="56" y="370"><tspan fill="#AD3DA4">@State private var</tspan><tspan fill="#1D1D1F"> path: [Route] = []</tspan></text>
+      <text x="56" y="450"><tspan fill="#0060BF">NavigationStack</tspan><tspan fill="#1D1D1F">(path: $path) {</tspan></text>
+      <text x="56" y="496"><tspan fill="#1D1D1F">    HomeView()</tspan></text>
+      <text x="56" y="542"><tspan fill="#1D1D1F">        .navigationDestination(</tspan></text>
+      <text x="56" y="588"><tspan fill="#1D1D1F">            for: Route.self) { ... }</tspan></text>
+      <text x="56" y="634" fill="#1D1D1F">}</text>
+    </g>
+  </g>
+
+  <!-- 路径胶囊 -->
+  <g filter="url(#soft)">
+    <rect x="990" y="250" width="480" height="96" rx="48" fill="#EEF1F5"/>
+    <rect x="990" y="452" width="480" height="96" rx="48" fill="#EEF1F5"/>
+    <rect x="990" y="654" width="480" height="96" rx="48" fill="#EEF1F5"/>
+  </g>
+  <g font-size="30" font-weight="600">
+    <circle cx="1052" cy="298" r="22" fill="#0071E3"/><text x="1052" y="308" text-anchor="middle" font-size="22" fill="#FFFFFF">1</text>
+    <text x="1096" y="309" fill="#1D1D1F">首页</text>
+    <circle cx="1052" cy="500" r="22" fill="#0071E3"/><text x="1052" y="510" text-anchor="middle" font-size="22" fill="#FFFFFF">2</text>
+    <text x="1096" y="511" fill="#1D1D1F">详情 #42</text>
+    <circle cx="1052" cy="702" r="22" fill="#0071E3"/><text x="1052" y="712" text-anchor="middle" font-size="22" fill="#FFFFFF">3</text>
+    <text x="1096" y="713" fill="#1D1D1F">设置</text>
+  </g>
+  <g stroke="#0071E3" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.5">
+    <path d="M1230 360 L1230 440"/><path d="M1230 562 L1230 642"/>
+  </g>
+</svg>

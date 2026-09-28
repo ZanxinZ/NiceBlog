@@ -1,0 +1,38 @@
+---
+title: App 本地打包：自动发送到群聊
+description: 一组脚本串起 iOS 测试包的打包、OTA 分发和飞书通知
+date: 2026-09-28
+cover: /images/blog/ios-test-ipa-release.svg
+tags: [iOS, 自动化]
+---
+
+使用 scripts 自动发布 iOS 测试包，实现「一键打包 → 上传 → 飞书通知」。
+
+```mermaid
+flowchart LR
+  A[package_test_ipa.sh<br/>打包] --> B[upload_to_r2.sh<br/>上传 R2] --> C[send_to_feishu.sh<br/>飞书通知]
+```
+
+## 1. package_test_ipa.sh
+
+- 使用 `xcodebuild` 归档并导出 Debug 测试 IPA。
+- 生成 OTA 安装所需的 `manifest.plist`。
+- 生成安装二维码和 `index.html` 安装页面。
+- 产物保存到 `build/package`。
+
+## 2. upload_to_r2.sh
+
+- 将 IPA、`manifest.plist` 和安装页上传到 Cloudflare R2 固定路径。
+
+## 3. send_to_feishu.sh
+
+- 读取版本信息，将云端安装页地址发送到飞书群机器人。
+
+## 4. release_test.sh
+
+- 串联以上三个步骤，实现「一键打包 → 上传 → 飞书通知」。
+- 任一步失败都会立即停止后续流程。
+
+## 小结
+
+这是一个 iOS 测试包的自动打包、OTA 分发和通知脚本集合。

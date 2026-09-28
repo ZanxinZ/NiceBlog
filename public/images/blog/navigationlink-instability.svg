@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" font-family="-apple-system, 'PingFang SC', 'Helvetica Neue', sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E9EDF3"/><stop offset="1" stop-color="#DCE3EC"/></linearGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="14" dy="14" stdDeviation="16" flood-color="#A3ACBA" flood-opacity="0.55"/><feDropShadow dx="-12" dy="-12" stdDeviation="14" flood-color="#FFFFFF" flood-opacity="0.9"/></filter>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#bg)"/>
+
+  <!-- 左：NavigationView 异常 pop -->
+  <g filter="url(#soft)">
+    <rect x="220" y="230" width="460" height="460" rx="56" fill="#EEF1F5"/>
+    <rect x="920" y="230" width="460" height="460" rx="56" fill="#EEF1F5"/>
+  </g>
+  <g transform="translate(450 460)">
+    <rect x="-150" y="-150" width="220" height="260" rx="24" fill="#FFFFFF" opacity="0.6"/>
+    <rect x="-110" y="-120" width="220" height="260" rx="24" fill="#FFFFFF" opacity="0.8"/>
+    <rect x="-70" y="-90" width="220" height="260" rx="24" fill="#FFFFFF" transform="rotate(12 40 40)"/>
+    <g transform="translate(110 -110)">
+      <circle r="34" fill="#FDECEC"/>
+      <path d="M-13 -13 L13 13 M13 -13 L-13 13" stroke="#E5484D" stroke-width="8" stroke-linecap="round"/>
+    </g>
+  </g>
+
+  <!-- 右：UINavigationController 稳定栈 + 右滑 -->
+  <g transform="translate(1150 460)">
+    <rect x="-150" y="-150" width="220" height="260" rx="24" fill="#FFFFFF" opacity="0.6"/>
+    <rect x="-110" y="-120" width="220" height="260" rx="24" fill="#FFFFFF" opacity="0.8"/>
+    <rect x="-70" y="-90" width="220" height="260" rx="24" fill="#FFFFFF"/>
+    <rect x="-40" y="-50" width="160" height="14" rx="7" fill="#1D1D1F" opacity="0.6"/>
+    <rect x="-40" y="-20" width="110" height="14" rx="7" fill="#1D1D1F" opacity="0.3"/>
+    <path d="M-40 80 L100 80 M76 56 L100 80 L76 104" stroke="#0071E3" stroke-width="10" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <g transform="translate(110 -110)">
+      <circle r="34" fill="#30A46C"/>
+      <path d="M-14 0 L-4 10 L14 -10" stroke="#FFFFFF" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </g>
+
+  <!-- 箭头 -->
+  <g stroke="#6E6E73" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M730 460 L870 460 M846 436 L870 460 L846 484"/>
+  </g>
+
+  <!-- 文案 -->
+  <g font-size="32" font-weight="600" text-anchor="middle" fill="#1D1D1F">
+    <text x="450" y="770">NavigationView</text>
+    <text x="1150" y="770">UINavigationController</text>
+  </g>
+  <g font-size="24" text-anchor="middle" fill="#6E6E73">
+    <text x="450" y="812">异常 pop · 重复进入</text>
+    <text x="1150" y="812">栈稳定 · 支持右滑返回</text>
+  </g>
+</svg>

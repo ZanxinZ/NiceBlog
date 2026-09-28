@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" font-family="-apple-system, 'PingFang SC', 'Helvetica Neue', sans-serif">
+  <defs>
+    <pattern id="dots" width="16" height="16" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#E2E1DE"/></pattern>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L8 5 L1 9" fill="none" stroke="#787774" stroke-width="1.5"/></marker>
+  </defs>
+  <rect width="1200" height="750" fill="#F7F6F3"/>
+  <rect width="1200" height="750" fill="url(#dots)"/>
+
+  <!-- Manifest -->
+  <g transform="translate(80 110)">
+    <rect width="260" height="150" rx="12" fill="#FFFFFF" stroke="#EAEAEA"/>
+    <text x="24" y="40" font-size="18" font-weight="600" fill="#111111">Manifest</text>
+    <g font-family="Menlo, monospace" font-size="13">
+      <text x="24" y="78" fill="#787774">url:</text><text x="80" y="78" fill="#1F6C9F">/mall/home</text>
+      <text x="24" y="104" fill="#787774">ver:</text><text x="80" y="104" fill="#346538">3.8.2</text>
+      <text x="24" y="130" fill="#787774">env:</text><text x="80" y="130" fill="#2F3437">prod</text>
+    </g>
+  </g>
+
+  <!-- Cookie / Token -->
+  <g transform="translate(80 470)">
+    <rect width="260" height="170" rx="12" fill="#FFFFFF" stroke="#EAEAEA"/>
+    <text x="24" y="40" font-size="18" font-weight="600" fill="#111111">Cookie 同步</text>
+    <g font-family="Menlo, monospace" font-size="13">
+      <rect x="24" y="60" width="120" height="26" rx="13" fill="#EDF3EC"/><text x="84" y="78" text-anchor="middle" fill="#346538">User Token</text>
+      <rect x="24" y="96" width="120" height="26" rx="13" fill="#EDF3EC"/><text x="84" y="114" text-anchor="middle" fill="#346538">Mall Token</text>
+      <rect x="24" y="132" width="120" height="26" rx="13" fill="#E1F3FE"/><text x="84" y="150" text-anchor="middle" fill="#1F6C9F">SafeArea</text>
+    </g>
+    <text x="236" y="150" text-anchor="end" font-size="22" fill="#346538">✓</text>
+  </g>
+
+  <!-- WKWebView 容器 -->
+  <g transform="translate(430 150)">
+    <rect width="300" height="450" rx="16" fill="#FFFFFF" stroke="#D9D8D5" stroke-width="1.5"/>
+    <text x="24" y="40" font-family="Menlo, monospace" font-size="13" fill="#787774">H5 Container</text>
+    <rect x="20" y="60" width="260" height="280" rx="10" fill="#E1F3FE" stroke="#1F6C9F" stroke-dasharray="5 5" stroke-opacity="0.5"/>
+    <text x="150" y="190" text-anchor="middle" font-size="22" font-weight="600" fill="#1F6C9F">WKWebView</text>
+    <text x="150" y="220" text-anchor="middle" font-family="Menlo, monospace" font-size="12" fill="#1F6C9F">main · secondary</text>
+    <rect x="20" y="356" width="260" height="70" rx="10" fill="#F7F6F3" stroke="#EAEAEA"/>
+    <text x="40" y="386" font-size="15" font-weight="600" fill="#2F3437">Session</text>
+    <text x="40" y="408" font-family="Menlo, monospace" font-size="12" fill="#787774">lifecycle · recover</text>
+    <rect x="186" y="378" width="78" height="26" rx="13" fill="#FBF3DB"/>
+    <text x="225" y="395" text-anchor="middle" font-family="Menlo, monospace" font-size="11" fill="#956400">OOM ↻</text>
+  </g>
+
+  <!-- Native -->
+  <g transform="translate(870 150)">
+    <rect width="250" height="450" rx="16" fill="#111111"/>
+    <text x="24" y="44" font-size="20" font-weight="600" fill="#FFFFFF">Native</text>
+    <g font-size="15" fill="#FFFFFF">
+      <rect x="20" y="70" width="210" height="46" rx="8" fill="#2F3437"/><text x="40" y="99">登录态</text>
+      <rect x="20" y="126" width="210" height="46" rx="8" fill="#2F3437"/><text x="40" y="155">分享</text>
+      <rect x="20" y="182" width="210" height="46" rx="8" fill="#2F3437"/><text x="40" y="211">支付</text>
+      <rect x="20" y="238" width="210" height="46" rx="8" fill="#2F3437"/><text x="40" y="267">跳转</text>
+      <rect x="20" y="294" width="210" height="46" rx="8" fill="#2F3437"/><text x="40" y="323">图片选择</text>
+    </g>
+    <rect x="20" y="370" width="210" height="56" rx="8" fill="none" stroke="#9F2F2D" stroke-dasharray="4 4"/>
+    <text x="40" y="394" font-family="Menlo, monospace" font-size="12" fill="#E8A6A4">JS Error · HTTP</text>
+    <text x="40" y="414" font-family="Menlo, monospace" font-size="12" fill="#E8A6A4">DNS · TLS · Timeout</text>
+  </g>
+
+  <!-- 连线 -->
+  <g stroke="#787774" stroke-width="1.5" fill="none" marker-end="url(#arrow)">
+    <path d="M340 185 L424 250"/>
+    <path d="M340 555 L424 480"/>
+    <path d="M736 330 L864 330"/>
+    <path d="M864 400 L736 400"/>
+  </g>
+  <rect x="752" y="348" width="96" height="30" rx="15" fill="#FFFFFF" stroke="#EAEAEA"/>
+  <text x="800" y="368" text-anchor="middle" font-family="Menlo, monospace" font-size="12" fill="#111111">JS Bridge</text>
+  <text x="800" y="318" text-anchor="middle" font-family="Menlo, monospace" font-size="11" fill="#787774">RPC</text>
+  <text x="800" y="422" text-anchor="middle" font-family="Menlo, monospace" font-size="11" fill="#787774">event</text>
+</svg>
