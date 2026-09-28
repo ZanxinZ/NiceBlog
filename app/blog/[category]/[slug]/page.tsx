@@ -2,12 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CaretLeft } from "@phosphor-icons/react/dist/ssr";
+import CopyArticleButton from "@/components/blog/CopyArticleButton";
 import PostToc from "@/components/blog/PostToc";
 import Markdown from "@/components/mdx/Markdown";
 import Container from "@/components/ui/Container";
 import ImageFrame from "@/components/ui/ImageFrame";
 import Tag from "@/components/ui/Tag";
 import { extractHeadings } from "@/lib/content";
+import { buildExport } from "@/lib/export";
 import { categories, getPost, getPosts, isCategory } from "@/lib/posts";
 
 type Props = { params: Promise<{ category: string; slug: string }> };
@@ -57,7 +59,10 @@ export default async function PostPage({ params }: Props) {
                   </Link>
                 ))}
               </div>
-              <h1 className="mt-3 text-[32px] font-bold leading-[1.2] tracking-[-0.02em] text-ink-strong sm:text-[40px]">{post.title}</h1>
+              <div className="mt-3 flex items-start justify-between gap-4">
+                <h1 className="min-w-0 text-[32px] font-bold leading-[1.2] tracking-[-0.02em] text-ink-strong sm:text-[40px]">{post.title}</h1>
+                <CopyArticleButton bundle={buildExport(post)} />
+              </div>
               {post.description && <p className="mt-3 text-[17px] text-muted">{post.description}</p>}
               {post.cover && <ImageFrame src={post.cover} alt={post.title} className="mt-6" />}
             </header>
