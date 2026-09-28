@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" font-family="-apple-system, 'PingFang SC', 'Helvetica Neue', sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E9EDF3"/><stop offset="1" stop-color="#DCE3EC"/></linearGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="14" dy="14" stdDeviation="16" flood-color="#A3ACBA" flood-opacity="0.55"/><feDropShadow dx="-12" dy="-12" stdDeviation="14" flood-color="#FFFFFF" flood-opacity="0.9"/></filter>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#bg)"/>
+
+  <g filter="url(#soft)"><rect x="140" y="170" width="1320" height="660" rx="48" fill="#EEF1F5"/></g>
+
+  <!-- 分支线 -->
+  <g fill="none" stroke-width="14" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="380" y1="330" x2="1360" y2="330" stroke="#1D1D1F"/>
+    <line x1="380" y1="560" x2="1360" y2="560" stroke="#0071E3"/>
+    <path d="M520 560 C 580 700, 640 700, 700 700 L 820 700 C 880 700, 920 640, 960 560" stroke="#34C759"/>
+    <path d="M1000 330 C 1040 250, 1080 240, 1120 240 L 1160 240 C 1200 240, 1230 280, 1250 330" stroke="#FF453A"/>
+    <path d="M1250 330 C 1270 430, 1290 500, 1300 560" stroke="#FF453A" stroke-dasharray="4 26"/>
+    <path d="M1080 560 C 1120 460, 1150 380, 1170 330" stroke="#0071E3" stroke-dasharray="4 26"/>
+  </g>
+
+  <!-- 提交点 -->
+  <g stroke-width="10" fill="#EEF1F5">
+    <circle cx="520" cy="560" r="22" stroke="#0071E3"/>
+    <circle cx="760" cy="700" r="22" stroke="#34C759"/>
+    <circle cx="960" cy="560" r="22" stroke="#0071E3"/>
+    <circle cx="1170" cy="330" r="30" stroke="#1D1D1F" fill="#1D1D1F"/>
+    <circle cx="1250" cy="330" r="30" stroke="#1D1D1F" fill="#1D1D1F"/>
+    <circle cx="1140" cy="240" r="22" stroke="#FF453A"/>
+  </g>
+
+  <!-- 标签 -->
+  <g font-size="40" font-weight="600" font-family="Menlo, monospace">
+    <text x="200" y="344" fill="#1D1D1F">main</text>
+    <text x="200" y="574" fill="#0071E3">develop</text>
+    <text x="200" y="714" fill="#34C759">feature</text>
+    <text x="840" y="230" fill="#FF453A">hotfix</text>
+  </g>
+  <g font-size="30" font-weight="600" fill="#5E5E63" font-family="Menlo, monospace">
+    <text x="960" y="400">v4.2.0</text>
+    <text x="1280" y="290">v4.2.1</text>
+  </g>
+</svg>
