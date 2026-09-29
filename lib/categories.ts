@@ -4,7 +4,6 @@ export const categories = {
   engineering: "技术",
   product: "产品",
   life: "生活",
-  prompt: "Prompt",
 } as const;
 
 export type Category = keyof typeof categories;

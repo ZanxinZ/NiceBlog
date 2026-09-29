@@ -1,4 +1,5 @@
 import path from "node:path";
+import { getAiItem } from "./ai";
 import { getDoc } from "./docs";
 import { getPost, isCategory, type Post } from "./posts";
 
@@ -19,7 +20,9 @@ export type ExportBundle = {
   files: ExportFile[];
 };
 
-type Node = { href: string; slug: string; title: string; description: string; cover: string; content: string };
+export type ExportSource = { href: string; slug: string; title: string; description: string; cover: string; content: string };
+
+type Node = ExportSource;
 
 function fromPost(post: Post): Node {
   return {
@@ -32,7 +35,7 @@ function fromPost(post: Post): Node {
   };
 }
 
-// 站内链接 → 文章 / 文档；其他页面（项目、关于页等）不展开。
+// 站内链接 → 文章 / 文档 / AI 资料；其他页面（项目、关于页等）不展开。
 function resolve(href: string): Node | null {
   const parts = href.split(/[?#]/)[0].split("/").filter(Boolean);
   if (parts[0] === "blog" && parts.length === 3 && isCategory(parts[1])) {
@@ -42,6 +45,10 @@ function resolve(href: string): Node | null {
   if (parts[0] === "docs") {
     const doc = getDoc(parts.slice(1));
     return doc && { href: doc.href, slug: doc.slug.at(-1) ?? "docs", title: doc.title, description: doc.description, cover: "", content: doc.content };
+  }
+  if (parts[0] === "ai" && parts.length === 3) {
+    const item = getAiItem(parts[1], parts[2]);
+    return item && { href: item.href, slug: item.slug, title: item.title, description: item.description, cover: "", content: item.content };
   }
   return null;
 }
@@ -92,7 +99,10 @@ function header(node: Node, cover: string | null) {
 }
 
 export function buildExport(post: Post): ExportBundle {
-  const root = fromPost(post);
+  return buildExportFrom(fromPost(post));
+}
+
+export function buildExportFrom(root: ExportSource): ExportBundle {
   const files: ExportFile[] = [];
   const placed = new Map<string, string>([[root.href, root.slug]]);
 

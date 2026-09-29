@@ -10,7 +10,7 @@ export default function Products() {
   return (
     <Container className="pb-8">
       <PageHeader eyebrow="Products" />
-      <ProjectGrid projects={getProducts()} hrefBase="/products/" emptyDir="content/products/" emptyTitle="还没有产品" uniform />
+      <ProjectGrid projects={getProducts()} hrefBase="/products/" emptyDir="content/products/" emptyTitle="还没有产品" horizontal />
     </Container>
   );
 }

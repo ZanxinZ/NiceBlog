@@ -6,19 +6,19 @@ import Tag from "@/components/ui/Tag";
 import type { ProjectMeta } from "@/lib/projects";
 
 // 不对称网格：第一个项目在左侧大卡片，接下来两个在右侧叠放，其余两列排开。
-// hrefBase / emptyDir 让产品页复用这套网格；uniform 时改为等宽三列的小卡片。
+// hrefBase / emptyDir 让产品页复用这套网格；horizontal 时全部用图左文右的横向卡片，宽屏固定两列（只有一个时也只占半行）。
 export default function ProjectGrid({
   projects,
   hrefBase = "/projects/",
   emptyDir = "content/projects/",
   emptyTitle = "还没有项目",
-  uniform = false,
+  horizontal = false,
 }: {
   projects: ProjectMeta[];
   hrefBase?: string;
   emptyDir?: string;
   emptyTitle?: string;
-  uniform?: boolean;
+  horizontal?: boolean;
 }) {
   if (projects.length === 0) {
     return (
@@ -31,12 +31,12 @@ export default function ProjectGrid({
     );
   }
 
-  if (uniform) {
+  if (horizontal) {
     return (
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-6 lg:grid-cols-2">
         {projects.map((p, i) => (
           <Reveal key={p.slug} index={i} className="min-w-0">
-            <ProjectCard project={p} href={hrefBase} stacked />
+            <ProjectCard project={p} href={hrefBase} />
           </Reveal>
         ))}
       </div>
@@ -76,13 +76,13 @@ export default function ProjectGrid({
   );
 }
 
-// 大卡片：图在上、文字在下；小卡片：宽屏时图文左右并排；stacked：小卡片但图在上。
-function ProjectCard({ project: p, href, lead = false, stacked = false }: { project: ProjectMeta; href: string; lead?: boolean; stacked?: boolean }) {
-  const vertical = lead || stacked;
+// 大卡片：图在上、文字在下；小卡片：宽屏时图文左右并排。
+function ProjectCard({ project: p, href, lead = false }: { project: ProjectMeta; href: string; lead?: boolean }) {
+  const vertical = lead;
   return (
     <Card href={`${href}${p.slug}/`} className={`flex h-full flex-col ${vertical ? "" : "sm:flex-row sm:gap-5"}`}>
       <ImageFrame src={p.cover} alt={p.title} ratio={vertical ? "16/10" : "4/3"} hint="项目图片位置" className={vertical ? "" : "sm:w-[46%] sm:shrink-0 sm:self-center"} />
-      <div className={`flex min-w-0 flex-1 flex-col px-1 ${lead ? "pt-6" : stacked ? "pt-5" : "pt-5 sm:pt-1"}`}>
+      <div className={`flex min-w-0 flex-1 flex-col px-1 ${lead ? "pt-6" : "pt-5 sm:pt-1"}`}>
         <div className="flex items-center justify-between gap-3">
           <div className="flex flex-wrap items-center gap-2">
             {p.status && <Tag tone={p.tone}>{p.status}</Tag>}

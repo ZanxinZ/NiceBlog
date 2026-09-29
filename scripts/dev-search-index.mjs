@@ -39,10 +39,12 @@ function urlFor(file) {
     const parts = rest.at(-1) === "index" ? rest.slice(0, -1) : rest;
     return `/docs/${parts.map((p) => p + "/").join("")}`;
   }
+  // AI 条目的网址不含分组目录：/ai/<kind>/<slug>/
+  if (type === "ai") return `/ai/${rest[0]}/${rest.at(-1)}/`;
   return `/${type === "projects" || type === "products" ? type : "blog"}/${rest.join("/")}/`;
 }
 
-const files = ["blog", "docs", "projects", "products"].flatMap((d) => walk(path.join(CONTENT, d)));
+const files = ["blog", "docs", "ai", "projects", "products"].flatMap((d) => walk(path.join(CONTENT, d)));
 
 const { index, errors } = await pagefind.createIndex({ forceLanguage: "zh-cn" });
 if (!index) throw new Error(`Pagefind 初始化失败：${errors?.join("; ")}`);
@@ -51,6 +53,8 @@ let count = 0;
 for (const file of files) {
   const { data, content } = matter(fs.readFileSync(file, "utf8"));
   if (data.draft) continue;
+  // AI 分类 / 分组的 index.mdx 只提供名称和顺序，没有页面
+  if (file.includes(`${path.sep}ai${path.sep}`) && path.basename(file).startsWith("index.")) continue;
   const title = String(data.title ?? path.basename(file));
   const summary = String(data.description ?? data.summary ?? "");
   const res = await index.addCustomRecord({

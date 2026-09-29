@@ -8,9 +8,9 @@ import ProjectGrid from "@/components/ProjectGrid";
 import Card, { CardTitle } from "@/components/ui/Card";
 import Reveal from "@/components/ui/Reveal";
 import { categories, getPosts, type Category } from "@/lib/posts";
-import { getProjects } from "@/lib/projects";
+import { getProducts, getProjects } from "@/lib/projects";
 
-// 门户式首页：上一页是文档（/blog），下一页是项目。
+// 门户式首页：依次是博客（/blog）、产品、项目。
 export default function Home() {
   const posts = getPosts();
   const [featured, ...recent] = posts;
@@ -21,11 +21,12 @@ export default function Home() {
       <PageDots
         pages={[
           { id: "writing", label: "文档" },
+          { id: "products", label: "产品" },
           { id: "projects", label: "项目" },
         ]}
       />
 
-      <PortalPage id="writing" index={1} total={2} title="博客" description="技术实践、产品思考 & 生活随笔" action={{ href: "/blog/", label: "更多" }}>
+      <PortalPage id="writing" index={1} total={3} title="博客" description="技术实践、产品思考 & 生活随笔" action={{ href: "/blog/", label: "更多" }}>
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1.45fr)_minmax(0,1fr)]">
           <Reveal className="min-w-0">
             {featured ? (
@@ -66,7 +67,11 @@ export default function Home() {
         </div>
       </PortalPage>
 
-      <PortalPage id="projects" index={2} total={2} title="项目" description="参与过的产品" action={{ href: "/projects/", label: "更多" }}>
+      <PortalPage id="products" index={2} total={3} title="产品" description="独立开发、已上架的产品" action={{ href: "/products/", label: "更多" }}>
+        <ProjectGrid projects={getProducts()} hrefBase="/products/" emptyDir="content/products/" emptyTitle="还没有产品" horizontal />
+      </PortalPage>
+
+      <PortalPage id="projects" index={3} total={3} title="项目" description="参与过的产品" action={{ href: "/projects/", label: "更多" }}>
         <ProjectGrid projects={projects} />
       </PortalPage>
     </>

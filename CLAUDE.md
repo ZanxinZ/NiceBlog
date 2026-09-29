@@ -17,7 +17,7 @@
 - **搜索索引**：本地开发时新增或修改内容后，运行 `pnpm search:dev`，搜索才能搜到新内容。
 - **发布**：推送到 `main` 后会自动构建并发布。
 
-## 1. 文章（`content/blog/engineering/`、`content/blog/product/`、`content/blog/life/` 或 `content/blog/prompt/`）
+## 1. 文章（`content/blog/engineering/`、`content/blog/product/` 或 `content/blog/life/`）
 
 ```yaml
 ---
@@ -30,11 +30,10 @@ draft: false                  # 设为 true 时，列表里不显示，详情页
 ---
 ```
 
-- 分类由所在目录决定，不要在 frontmatter 里写 `category`。只有四个分类：
+- 分类由所在目录决定，不要在 frontmatter 里写 `category`。只有三个分类：
   - `engineering`（技术）：所有技术文章，通用技术和特定平台（iOS 等）都放这里。
   - `product`（产品）：产品思维、独立开发、设计决策。
   - `life`（生活）。
-  - `prompt`（Prompt）：可以直接复用的 AI 提示词。
 - 不要为具体技术新建分类。具体的技术或主题（如 `iOS`、`SwiftUI`、`Notion`、`AI`）写在 `tags` 里，文章列表支持按 tag 筛选。tag 的写法要保持一致（比如统一写 `iOS`，不要混用 `ios`），分类名本身不用再写成 tag。
 - 首页的头条总是日期最新的那篇文章，所以写日期时要注意这一点。
 
@@ -88,8 +87,31 @@ screenshots:            # 可选，详情页正文前横向滚动展示的截图
   - /images/products/xxx/1.jpg
 ```
 
-- 产品不会出现在首页；`featured` 对产品无效。
+- 首页「产品」一页会展示全部产品（不看 `featured`），排序同上。
 - 图片放在 `public/images/products/` 下。
+
+## 3.2 AI 资料（`content/ai/`）
+
+导航栏「AI」页：左侧是树状目录（带筛选），右侧预览正文，支持复制全文 / 导出。读取逻辑在 `lib/ai.ts`。
+
+可复用的 AI 提示词、Skill 都放这里，不再写成博客文章。左侧目录是树状的：分类 → 分组 → 条目。
+
+- `content/ai/<分类>/index.mdx`：只写 `title`（目录里的分类名）和 `order`（顺序），没有单独页面。新增分类只需新建目录和这个文件。`/ai/` 会直接跳到第一个条目。
+- `content/ai/<分类>/<分组>/index.mdx`：可选，分组的 `title`、`order`；不写时用目录名。
+- `content/ai/<分类>/[<分组>/]<slug>.mdx`：条目，地址都是 `/ai/<分类>/<slug>/`，分组不进网址，所以换分组不会让链接失效；同一分类内 slug 不能重名。
+
+```yaml
+---
+title: 标题
+description: 一句话说明用途
+order: 1                      # 同分类内越小越靠前，不写时默认是 100
+tags: [AI]                    # 可选
+---
+```
+
+- 条目不支持 `draft`，没有日期，和文档一样保持内容最新。
+- 不放图片，也不配封面（不受下方「图片」一节约束）。
+- 核心内容（提示词、规则、清单）全部放进 ` ```text ` 代码块，代码块自带「复制」按钮；介绍性的话写成普通文本。
 
 ## 4. 不在 `content/` 里的内容
 
@@ -106,6 +128,8 @@ screenshots:            # 可选，详情页正文前横向滚动展示的截图
 - 极简抽象
 - Mini Architecture / Diagram
 - 产品截图 / UI 展示
+
+AI tab 页面下的文章，不要放入图片；
 
 # Git 操作相关
 git 操作之前，必须经过我授权的同意，除非我明确已经说明要git操作。

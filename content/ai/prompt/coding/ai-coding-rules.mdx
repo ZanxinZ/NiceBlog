@@ -1,11 +1,13 @@
 ---
 title: AI 编程协作规则
 description: 给 AI 编程助手的基本规则、开发原则与代码组织约定
-date: 2026-09-28
-cover: /images/blog/ai-coding-rules.svg
+order: 1
 tags: [AI, iOS]
 ---
 
+放进 AI 编程助手的项目规则文件里，约束它的协作方式、开发原则和代码组织。
+
+```text title="coding-rules.prompt"
 ## 基本规则
 
 - 回复优先使用中文。
@@ -28,9 +30,10 @@ tags: [AI, iOS]
 
 ## 代码组织
 
-- `struct` / `class` 过大时，优先在同一文件使用 `extension` 按职责拆分。
+- struct / class 过大时，优先在同一文件使用 extension 按职责拆分。
 - 相似方法归为一组。
-- 较大的代码块的开头，使用 `// MARK: xxx` 的说明，便于查阅。
+- 较大的代码块的开头，使用 // MARK: xxx 的说明，便于查阅。
 - 适当加上少量注释，方便后续查阅，如无必要则不加。
 - 高复用且存在个性化配置需求的 UI 控件，优先封装并参数化。
 - 合理拆分职责，避免为了拆分而拆分。
+```
